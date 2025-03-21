@@ -1,19 +1,39 @@
 package nlu.com.app.service;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import nlu.com.app.dto.response.DoctorCardDTO;
-import nlu.com.app.entity.Image;
 import nlu.com.app.repository.DoctorRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@FieldDefaults(makeFinal = true)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class DoctorService {
-    DoctorRepository doctorRepository;
+
+  DoctorRepository doctorRepository;
+
+  public List<DoctorSearchResponseDTO> searchDoctorSpecialization(String specialization) {
+    var response = doctorRepository.findAllBySpecialization(specialization);
+    List<DoctorSearchResponseDTO> responseDTOS = new ArrayList<>();
+    response.forEach(data -> {
+      responseDTOS.add(DoctorSearchResponseDTO
+          .builder()
+          .id(data.getId())
+          .address(data.getAddress())
+          .name(data.getLastName() + " " + data.getFirstName())
+          .specialization(data.getSpecialization())
+          .img(String.valueOf(
+              data.getImages().stream().filter(image -> Boolean.parseBoolean(image.getUrl()))
+                  .findFirst()))
+          .build());
+    });
+    return responseDTOS;
+  }
+
     public List<DoctorCardDTO> listDoctors() {
         return doctorRepository.findAll().stream()
                 .map(doctor -> DoctorCardDTO.builder()
