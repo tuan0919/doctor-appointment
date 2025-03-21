@@ -14,6 +14,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import nlu.com.app.enums.Accident;
+import nlu.com.app.enums.Specialty;
 
 @Table(name = "Doctors")
 @Getter
@@ -26,7 +27,7 @@ import nlu.com.app.enums.Accident;
 public class Doctor extends User {
 
   @Enumerated(value = EnumType.STRING)
-  private String specialization;
+  private Specialty specialization;
   private int experience;
   private String qualification;
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "doctor")
@@ -36,14 +37,6 @@ public class Doctor extends User {
   private float price;
   @Enumerated(value = EnumType.STRING)
   private Accident accident;
-
-  public String getSpecialization() {
-    return specialization;
-  }
-
-  public void setSpecialization(String specialization) {
-    this.specialization = specialization;
-  }
 
   public int getExperience() {
     return experience;
