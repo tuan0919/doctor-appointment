@@ -7,13 +7,16 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
+
 import java.util.Set;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import nlu.com.app.enums.Accident;
+import nlu.com.app.enums.Specialty;
 
 @Table(name = "Doctors")
 @Getter
@@ -24,48 +27,39 @@ import nlu.com.app.enums.Accident;
 @RequiredArgsConstructor
 @AllArgsConstructor
 public class Doctor extends User {
+    private int experience;
+    private String qualification;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "doctor")
+    Set<Appointment> appointments;
+    private String bio;
+    private float avgRating;
+    private float price;
+    @Enumerated(value = EnumType.STRING)
+    private Accident accident;
+    @Enumerated(value = EnumType.STRING)
+    private Specialty specialty;
 
-  @Enumerated(value = EnumType.STRING)
-  private String specialization;
-  private int experience;
-  private String qualification;
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "doctor")
-  Set<Appointment> appointments;
-  private String bio;
-  private float avgRating;
-  private float price;
-  @Enumerated(value = EnumType.STRING)
-  private Accident accident;
+    public int getExperience() {
+        return experience;
+    }
 
-  public String getSpecialization() {
-    return specialization;
-  }
+    public void setExperience(int experience) {
+        this.experience = experience;
+    }
 
-  public void setSpecialization(String specialization) {
-    this.specialization = specialization;
-  }
+    public String getQualification() {
+        return qualification;
+    }
 
-  public int getExperience() {
-    return experience;
-  }
+    public void setQualification(String qualification) {
+        this.qualification = qualification;
+    }
 
-  public void setExperience(int experience) {
-    this.experience = experience;
-  }
+    public Set<Appointment> getAppointments() {
+        return appointments;
+    }
 
-  public String getQualification() {
-    return qualification;
-  }
-
-  public void setQualification(String qualification) {
-    this.qualification = qualification;
-  }
-
-  public Set<Appointment> getAppointments() {
-    return appointments;
-  }
-
-  public void setAppointments(Set<Appointment> appointments) {
-    this.appointments = appointments;
-  }
+    public void setAppointments(Set<Appointment> appointments) {
+        this.appointments = appointments;
+    }
 }
