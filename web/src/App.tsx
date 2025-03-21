@@ -1,11 +1,8 @@
 import './App.css'
 
-import DoctorItemCard from "./components/DoctorItemCard.tsx";
 import Header from "./components/Header.tsx";
 import Footer from "./components/Footer.tsx";
 import {useEffect, useState} from "react";
-import Header from "./components/Header.tsx";
-import Footer from "./components/Footer.tsx";
 import DoctorList from "./pages/DoctorList.tsx";
 
 const LoadingScreen = () => {
