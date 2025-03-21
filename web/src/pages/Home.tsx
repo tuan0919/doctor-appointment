@@ -1,6 +1,10 @@
+import SearchDoctor from "../components/SearchDoctor.tsx";
+
 function Home() {
     return (
-        <div>Home Page</div>
+        <>
+            <SearchDoctor/>
+        </>
     );
 }
 
