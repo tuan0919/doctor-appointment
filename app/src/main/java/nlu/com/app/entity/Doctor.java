@@ -7,9 +7,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
-
 import java.util.Set;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,39 +25,40 @@ import nlu.com.app.enums.Specialty;
 @RequiredArgsConstructor
 @AllArgsConstructor
 public class Doctor extends User {
-    private int experience;
-    private String qualification;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "doctor")
-    Set<Appointment> appointments;
-    private String bio;
-    private float avgRating;
-    private float price;
-    @Enumerated(value = EnumType.STRING)
-    private Accident accident;
-    @Enumerated(value = EnumType.STRING)
-    private Specialty specialty;
 
-    public int getExperience() {
-        return experience;
-    }
+  @Enumerated(value = EnumType.STRING)
+  private Specialty specialization;
+  private int experience;
+  private String qualification;
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "doctor")
+  Set<Appointment> appointments;
+  private String bio;
+  private float avgRating;
+  private float price;
+  @Enumerated(value = EnumType.STRING)
+  private Accident accident;
 
-    public void setExperience(int experience) {
-        this.experience = experience;
-    }
+  public int getExperience() {
+    return experience;
+  }
 
-    public String getQualification() {
-        return qualification;
-    }
+  public void setExperience(int experience) {
+    this.experience = experience;
+  }
 
-    public void setQualification(String qualification) {
-        this.qualification = qualification;
-    }
+  public String getQualification() {
+    return qualification;
+  }
 
-    public Set<Appointment> getAppointments() {
-        return appointments;
-    }
+  public void setQualification(String qualification) {
+    this.qualification = qualification;
+  }
 
-    public void setAppointments(Set<Appointment> appointments) {
-        this.appointments = appointments;
-    }
+  public Set<Appointment> getAppointments() {
+    return appointments;
+  }
+
+  public void setAppointments(Set<Appointment> appointments) {
+    this.appointments = appointments;
+  }
 }

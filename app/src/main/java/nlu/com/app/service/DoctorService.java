@@ -1,5 +1,7 @@
 package nlu.com.app.service;
 
+import java.util.*;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -12,7 +14,6 @@ import nlu.com.app.repository.DoctorRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,33 +22,50 @@ import java.util.stream.Collectors;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class DoctorService {
 
-    DoctorRepository doctorRepository;
+  DoctorRepository doctorRepository;
 
-//  public List<DoctorSearchResponseDTO> searchDoctorSpecialization(String specialization) {
-//    var response = doctorRepository.findAllBySpecialization(specialization);
-//    List<DoctorSearchResponseDTO> responseDTOS = new ArrayList<>();
-//    response.forEach(data -> {
-//      responseDTOS.add(DoctorSearchResponseDTO
-//          .builder()
-//          .id(data.getId())
-//          .address(data.getAddress())
-//          .name(data.getLastName() + " " + data.getFirstName())
-//          .specialization(data.getSpecialization())
-//          .img(String.valueOf(
-//              data.getImages().stream()
-//                  .findFirst().orElse(Image.builder().url(null).build()).getUrl()))
-//          .build());
-//    });
-//    return responseDTOS;
-//  }
+  public List<DoctorCardDTO> listDoctors() {
+    return doctorRepository.findAll().stream()
+        .map(doctor -> DoctorCardDTO.builder()
+            .id(doctor.getId())
+            .name(doctor.getFirstName() + doctor.getLastName())
+            .thumbnail(
+                doctor.getImages().stream().findFirst().orElse(Image.builder().url("null").build())
+                    .getUrl())
+            .ratings(5.3f)
+            .visit(69)
+            .price(0)
+            .specialization(doctor.getSpecialization().getDescription())
+            .hospital(doctor.getAddress()).build())
+        .toList();
+  }
+
+  public List<DoctorSearchResponseDTO> searchDoctorByAccident(String keyword) {
+    var key = Accident.findSpecialtyEnumByAccident(keyword);
+    var doctor = doctorRepository.findAllByAccident(key);
+
+    if (doctor.size() < 1) {
+      return null;
+    }
+
+    List<DoctorSearchResponseDTO> responseDTOS = new ArrayList<>();
+    doctor.forEach(data -> {
+      responseDTOS.add(DoctorSearchResponseDTO
+          .builder()
+          .id(data.getId())
+          .address(data.getAddress())
+          .name(data.getLastName() + " " + data.getFirstName())
+          .specialization(data.getSpecialization().getDescription())
+          .img(String.valueOf(
+              data.getImages().stream()
+                  .findFirst().orElse(Image.builder().url(null).build()).getUrl()))
+          .build());
+    });
+
+    return responseDTOS;
+  }
 
     public List<DoctorSearchResponseDTO> searchDoctorBySymptom(String keyword) {
-//        Specialty specialty;
-//        for (Specialty s : Specialty.values()) {
-//            if (s.getSymptoms().contains(keyword)) {
-//                specialty = s;
-//            }
-//        }
         Specialty specialty = Arrays.stream(Specialty.values())
                 .filter(spec -> spec.getSymptoms().contains(keyword))
                 .findFirst().orElse(null);
@@ -63,18 +81,4 @@ public class DoctorService {
                                 .build())
                 .collect(Collectors.toList());
     }
-
-//    public List<DoctorCardDTO> listDoctors() {
-//        return doctorRepository.findAll().stream()
-//                .map(doctor -> DoctorCardDTO.builder()
-//                        .id(doctor.getId())
-//                        .name(doctor.getFirstName() + doctor.getLastName())
-//                        .thumbnail(doctor.getImages().stream().findFirst().orElse(Image.builder().url("null").build()).getUrl())
-//                        .ratings(5.3f)
-//                        .visit(69)
-//                        .price(0)
-//                        .specialization(doctor.getSpecialization())
-//                        .hospital(doctor.getAddress()).build())
-//                .toList();
-//    }
 }
