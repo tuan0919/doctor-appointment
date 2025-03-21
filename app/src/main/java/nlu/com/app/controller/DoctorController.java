@@ -30,6 +30,13 @@ public class DoctorController {
   @GetMapping("/search-accident")
   public ApiResponse<List<DoctorSearchResponseDTO>> searchDoctorByAccident(
       @RequestParam String keyword) {
-    return doctorService.searchDoctorByAccident(keyword);
+    var response = doctorService.searchDoctorByAccident(keyword);
+    if (response != null) {
+      return ApiResponse.<List<DoctorSearchResponseDTO>>builder().result(response).build();
+    }
+    return ApiResponse.<List<DoctorSearchResponseDTO>>builder()
+        .result(null)
+        .message("không có dữ liệu")
+        .build();
   }
 }

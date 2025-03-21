@@ -5,7 +5,6 @@ import java.util.List;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import nlu.com.app.dto.response.ApiResponse;
 import nlu.com.app.dto.response.DoctorCardDTO;
 import nlu.com.app.dto.response.DoctorSearchResponseDTO;
 import nlu.com.app.entity.Image;
@@ -54,16 +53,12 @@ public class DoctorService {
         .toList();
   }
 
-  public ApiResponse<List<DoctorSearchResponseDTO>> searchDoctorByAccident(String keyword) {
+  public List<DoctorSearchResponseDTO> searchDoctorByAccident(String keyword) {
     var key = Accident.findSpecialtyEnumByAccident(keyword);
     var doctor = doctorRepository.findAllByAccident(key);
 
     if (doctor.size() < 1) {
-      return ApiResponse.<List<DoctorSearchResponseDTO>>
-              builder()
-          .result(null)
-          .message("Không có dữ liệu")
-          .build();
+      return null;
     }
 
     List<DoctorSearchResponseDTO> responseDTOS = new ArrayList<>();
@@ -80,10 +75,6 @@ public class DoctorService {
           .build());
     });
 
-    return ApiResponse.<List<DoctorSearchResponseDTO>>
-            builder()
-        .result(responseDTOS)
-        .message("Search thành công")
-        .build();
+    return responseDTOS;
   }
 }
