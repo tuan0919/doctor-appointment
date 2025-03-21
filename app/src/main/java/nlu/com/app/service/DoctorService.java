@@ -57,6 +57,7 @@ public class DoctorService {
           .address(data.getAddress())
           .name(data.getLastName() + " " + data.getFirstName())
           .specialization(data.getSpecialization().getDescription())
+                      .avgRating(data.getAvgRating())
           .img(String.valueOf(
               data.getImages().stream()
                   .findFirst().orElse(Image.builder().url(null).build()).getUrl()))
@@ -79,6 +80,7 @@ public class DoctorService {
                                 .address(doctor.getAddress())
                                 .specialization(doctor.getSpecialization().getDescription())
                                 .img(doctor.getImages().stream().map(Image::getUrl).findFirst().orElse(null))
+                                .avgRating(doctor.getAvgRating())
                                 .build())
                 .collect(Collectors.toList());
     }

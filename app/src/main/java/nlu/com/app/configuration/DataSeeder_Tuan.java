@@ -74,6 +74,7 @@ public class DataSeeder_Tuan {
       doctor1.setAccident(Accident.DISLOCATION);
       doctor1.setExperience(10);
       doctor1.setQualification("PhD");
+      doctor1.setAvgRating(5.0f);
       doctor1.setCreatedAt(LocalDateTime.now());
       doctor1.setImages(Set.of(Image.builder().url(imageUrls[0]).build()));
       doctors.add(doctor1);
@@ -84,6 +85,7 @@ public class DataSeeder_Tuan {
       doctor2.setEmail("tranthilinh@gmail.com");
       doctor2.setSpecialization(Specialty.GASTROENTEROLOGY);
       doctor2.setAccident(Accident.FRACTURE);
+      doctor2.setAvgRating(5.0f);
       doctor2.setExperience(8);
       doctor2.setQualification("MD");
       doctor2.setCreatedAt(LocalDateTime.now());
@@ -96,6 +98,7 @@ public class DataSeeder_Tuan {
       doctor3.setEmail("lehoangminh@gmail.com");
       doctor3.setSpecialization(Specialty.DERMATOLOGY);
       doctor3.setAccident(Accident.BURN);
+      doctor3.setAvgRating(5.0f);
       doctor3.setExperience(12);
       doctor3.setQualification("PhD");
       doctor3.setCreatedAt(LocalDateTime.now());
@@ -109,6 +112,7 @@ public class DataSeeder_Tuan {
       doctor4.setSpecialization(Specialty.NEUROLOGY);
       doctor4.setAccident(Accident.WOUND);
       doctor4.setExperience(15);
+      doctor4.setAvgRating(5.0f);
       doctor4.setQualification("MD");
       doctor4.setImages(Set.of(Image.builder().url(imageUrls[3]).build()));
       doctor4.setCreatedAt(LocalDateTime.now());
@@ -119,6 +123,7 @@ public class DataSeeder_Tuan {
       doctor5.setLastName("Nguyễn Thị");
       doctor5.setEmail("nguyenthilan@gmail.com");
       doctor5.setSpecialization(Specialty.INFECTIOUS_DISEASES);
+      doctor5.setAvgRating(5.0f);
       doctor5.setAccident(Accident.DROWNING);
       doctor5.setExperience(9);
       doctor5.setQualification("MSc");
@@ -131,6 +136,7 @@ public class DataSeeder_Tuan {
       doctor6.setLastName("Bùi Văn");
       doctor6.setEmail("buivandung@gmail.com");
       doctor6.setSpecialization(Specialty.GENERAL_PEDIATRICS);
+      doctor6.setAvgRating(5.0f);
       doctor6.setAccident(Accident.FRACTURE);
       doctor6.setExperience(11);
       doctor6.setQualification("MD");
@@ -142,6 +148,7 @@ public class DataSeeder_Tuan {
       doctor7.setFirstName("Phương");
       doctor7.setLastName("Đỗ Thị");
       doctor7.setEmail("dothiphuong@gmail.com");
+      doctor7.setAvgRating(5.0f);
       doctor7.setSpecialization(Specialty.DERMATOLOGY);
       doctor7.setAccident(Accident.BURN);
       doctor7.setExperience(7);
@@ -156,6 +163,7 @@ public class DataSeeder_Tuan {
       doctor8.setEmail("truongconghai@gmail.com");
       doctor8.setSpecialization(Specialty.NEUROLOGY);
       doctor8.setAccident(Accident.DISLOCATION);
+      doctor8.setAvgRating(5.0f);
       doctor8.setExperience(14);
       doctor8.setQualification("PhD");
       doctor8.setImages(Set.of(Image.builder().url(imageUrls[2]).build()));
@@ -168,6 +176,7 @@ public class DataSeeder_Tuan {
       doctor9.setEmail("lythihanh@gmail.com");
       doctor9.setSpecialization(Specialty.GASTROENTEROLOGY);
       doctor9.setAccident(Accident.WOUND);
+      doctor9.setAvgRating(5.0f);
       doctor9.setExperience(6);
       doctor9.setQualification("MD");
       doctor9.setImages(Set.of(Image.builder().url(imageUrls[1]).build()));
@@ -180,6 +189,7 @@ public class DataSeeder_Tuan {
       doctor10.setEmail("vuhuutai@gmail.com");
       doctor10.setSpecialization(Specialty.PULMONOLOGY);
       doctor10.setAccident(Accident.DROWNING);
+      doctor10.setAvgRating(5.0f);
       doctor10.setExperience(13);
       doctor10.setQualification("PhD");
       doctor10.setImages(Set.of(Image.builder().url(imageUrls[3]).build()));
