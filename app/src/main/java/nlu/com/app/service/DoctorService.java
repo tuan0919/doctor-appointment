@@ -16,9 +16,8 @@ public class DoctorService {
 
   DoctorRepository doctorRepository;
 
-  List<DoctorSearchResponseDTO> searchDoctorSpecialization(String specialization) {
+  public List<DoctorSearchResponseDTO> searchDoctorSpecialization(String specialization) {
     var response = doctorRepository.findAllBySpecialization(specialization);
-
     List<DoctorSearchResponseDTO> responseDTOS = new ArrayList<>();
     response.forEach(data -> {
       responseDTOS.add(DoctorSearchResponseDTO
