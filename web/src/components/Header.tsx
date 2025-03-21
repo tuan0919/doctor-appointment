@@ -1,6 +1,6 @@
 function Header() {
     return (
-        <header className="bg-white shadow-sm max-w">
+        <header className="bg-white shadow-sm max-w mb-3">
             {/* Top Section */}
             <div className="max-w-7xl mx-auto flex justify-between items-center p-4">
                 {/* Logo */}

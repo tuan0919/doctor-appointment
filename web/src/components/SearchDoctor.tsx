@@ -14,6 +14,7 @@ interface Doctor {
 function SearchDoctor() {
     const [keyword, setKeyword] = useState<string>("");
     const [results, setResults] = useState<Doctor[]>([]);
+    console.log(results)
 
     const handleSearch = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -62,10 +63,11 @@ function SearchDoctor() {
                 </div>
             </form>
         </div>
-        <div>
-            {sampleDoctors.length > 0 && <ShowDoctorCard doctors={doctorsData} />}
+            <div className="w-full flex justify-center">
+                {sampleDoctors.length > 0 && <ShowDoctorCard doctors={doctorsData} />}
+            </div>
+
         </div>
-    </div>
     );
 }
 
