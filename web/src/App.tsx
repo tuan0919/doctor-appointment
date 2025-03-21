@@ -4,6 +4,9 @@ import DoctorItemCard from "./components/DoctorItemCard.tsx";
 import Header from "./components/Header.tsx";
 import Footer from "./components/Footer.tsx";
 import {useEffect, useState} from "react";
+import Header from "./components/Header.tsx";
+import Footer from "./components/Footer.tsx";
+import DoctorList from "./pages/DoctorList.tsx";
 
 const LoadingScreen = () => {
     return (
@@ -42,23 +45,7 @@ function App() {
         {!loading && (
     <>
         <Header/>
-        <div className="p-4">
-          {/* Hiển thị danh sách bác sĩ theo dạng lưới 4 cột */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              <DoctorItemCard/>
-              <DoctorItemCard/>
-              <DoctorItemCard/>
-              <DoctorItemCard/>
-              <DoctorItemCard/>
-              <DoctorItemCard/>
-              <DoctorItemCard/>
-              <DoctorItemCard/>
-              <DoctorItemCard/>
-              <DoctorItemCard/>
-              <DoctorItemCard/>
-              <DoctorItemCard/>
-          </div>
-      </div>
+        <DoctorList/>
         <Footer/>
     </>
         )}
