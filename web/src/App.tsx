@@ -3,7 +3,8 @@ import './App.css'
 import Header from "./components/Header.tsx";
 import Footer from "./components/Footer.tsx";
 import {useEffect, useState} from "react";
-import DoctorList from "./pages/DoctorList.tsx";
+
+import DoctorDetail from "./pages/DoctorDetail.tsx";
 
 const LoadingScreen = () => {
     return (
@@ -42,7 +43,7 @@ function App() {
         {!loading && (
     <>
         <Header/>
-        <DoctorList/>
+        <DoctorDetail/>
         <Footer/>
     </>
         )}
