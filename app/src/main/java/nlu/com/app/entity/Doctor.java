@@ -1,9 +1,7 @@
 package nlu.com.app.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Set;
 
@@ -12,6 +10,9 @@ import java.util.Set;
 @Setter
 @PrimaryKeyJoinColumn(name = "user_id")
 @Entity
+@Builder
+@RequiredArgsConstructor
+@AllArgsConstructor
 public class Doctor extends User {
     private String specialization;
     private int experience;

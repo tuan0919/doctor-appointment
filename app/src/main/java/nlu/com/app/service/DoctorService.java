@@ -3,6 +3,10 @@ package nlu.com.app.service;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import nlu.com.app.dto.response.DoctorCardDTO;
+import nlu.com.app.dto.response.DoctorSearchResponseDTO;
+import nlu.com.app.entity.Doctor;
+import nlu.com.app.entity.Image;
 import nlu.com.app.repository.DoctorRepository;
 import org.springframework.stereotype.Service;
 
@@ -27,8 +31,8 @@ public class DoctorService {
           .name(data.getLastName() + " " + data.getFirstName())
           .specialization(data.getSpecialization())
           .img(String.valueOf(
-              data.getImages().stream().filter(image -> Boolean.parseBoolean(image.getUrl()))
-                  .findFirst()))
+              data.getImages().stream()
+                  .findFirst().orElse(Image.builder().url(null).build()).getUrl()))
           .build());
     });
     return responseDTOS;
@@ -37,6 +41,7 @@ public class DoctorService {
     public List<DoctorCardDTO> listDoctors() {
         return doctorRepository.findAll().stream()
                 .map(doctor -> DoctorCardDTO.builder()
+                        .id(doctor.getId())
                         .name(doctor.getFirstName() + doctor.getLastName())
                         .thumbnail(doctor.getImages().stream().findFirst().orElse(Image.builder().url("null").build()).getUrl())
                         .ratings(5.3f)

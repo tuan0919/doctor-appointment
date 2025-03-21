@@ -12,6 +12,8 @@ import java.time.LocalDateTime;
 @Table(name = "Images")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
+@AllArgsConstructor
+@RequiredArgsConstructor
 public class Image {
     @Id
     Long id;

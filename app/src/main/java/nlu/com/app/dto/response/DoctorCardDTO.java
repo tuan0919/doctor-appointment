@@ -9,6 +9,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level =  AccessLevel.PRIVATE)
 @Builder
 public class DoctorCardDTO {
+    Long id;
     String name;
     String specialization;
     String thumbnail;
