@@ -1,6 +1,7 @@
 import React from "react";
 import {DoctorCardProps} from "../pages/DoctorList.tsx";
 
+
 const DoctorItemCard: React.FC<DoctorCardProps> = ({
                                                        name, hospital, price, ratings, specialization, thumbnail, visit
                                                    }) => {
