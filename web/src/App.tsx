@@ -4,6 +4,9 @@ import Header from "./components/Header.tsx";
 import Footer from "./components/Footer.tsx";
 import {useEffect, useState} from "react";
 import DoctorList from "./pages/DoctorList.tsx";
+import InformationDoctor from "./components/InformationDoctor.tsx";
+import {doctorInfo} from "./data/doctorsData.ts";
+import DoctorDetail from "./pages/DoctorDetail.tsx";
 
 const LoadingScreen = () => {
     return (
@@ -42,7 +45,7 @@ function App() {
         {!loading && (
     <>
         <Header/>
-        <DoctorList/>
+        <DoctorDetail></DoctorDetail>
         <Footer/>
     </>
         )}

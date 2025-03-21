@@ -29,7 +29,7 @@ const DoctorItemCard: React.FC<DoctorCardProps> = ({
                 </h3>
                 <p className="text-gray-500 flex items-center">🔹 {specialization}</p>
                 <p className="text-gray-500 flex items-center">💰 {price.toLocaleString()}đ</p>
-                <p className="text-gray-500 flex items-center">🏥 Bác sĩ Chuyên Khoa</p>
+                <p className="text-gray-500 flex items-center">🏥 Nơi làm việc</p>
             </div>
             <button
                 className="mt-4 w-full bg-blue-500 text-white font-semibold py-2 rounded-lg shadow hover:bg-blue-600">

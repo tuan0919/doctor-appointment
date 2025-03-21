@@ -1,4 +1,5 @@
 import { DoctorCardProps } from "../pages/DoctorList";
+import {InformationDoctorProps} from "../components/InformationDoctor.tsx";
 
 export const doctorsData: DoctorCardProps[] = [
     {
@@ -42,3 +43,14 @@ export const doctorsData: DoctorCardProps[] = [
         visit: 100
     }
 ];
+
+
+export const doctorInfo: InformationDoctorProps = {
+    header: "Giới thiệu",
+    content: "Bác cũng có kinh nghiệm trong tư vấn về hiếm muộn, các biện pháp tránh thai, kế hoạch hóa gia đình, theo dõi thai kỳ, và dinh dưỡng cho thai phụ, cũng như chăm sóc sản phụ sau sinh."
+};
+
+export const experienceInfo: InformationDoctorProps = {
+    header: "Kinh nghiệm",
+    content: "Với hơn 5 năm kinh nghiệm, bác sĩ chuyên môn trong việc khám, tư vấn, và điều trị các bệnh lý Sản Phụ Khoa như u xơ tử cung, u nang buồng trứng, kinh nguyệt không đều, đau bụng kinh."
+};
