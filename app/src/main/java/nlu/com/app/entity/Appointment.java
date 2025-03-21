@@ -2,6 +2,8 @@ package nlu.com.app.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Data;
+import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
@@ -9,6 +11,7 @@ import lombok.experimental.FieldDefaults;
 @Table(name = "Appointments")
 @Inheritance(strategy = InheritanceType.JOINED)
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@Getter
 @Setter
 public class Appointment {
     @Id
@@ -20,28 +23,4 @@ public class Appointment {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "doctor_id")
     Doctor doctor;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Patient getPatient() {
-        return patient;
-    }
-
-    public void setPatient(Patient patient) {
-        this.patient = patient;
-    }
-
-    public Doctor getDoctor() {
-        return doctor;
-    }
-
-    public void setDoctor(Doctor doctor) {
-        this.doctor = doctor;
-    }
 }
