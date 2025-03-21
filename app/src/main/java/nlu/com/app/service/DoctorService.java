@@ -9,6 +9,7 @@ import nlu.com.app.dto.response.DoctorCardDTO;
 import nlu.com.app.dto.response.DoctorSearchResponseDTO;
 import nlu.com.app.entity.Doctor;
 import nlu.com.app.entity.Image;
+import nlu.com.app.enums.Accident;
 import nlu.com.app.enums.Specialty;
 import nlu.com.app.repository.DoctorRepository;
 import org.springframework.stereotype.Service;
@@ -69,14 +70,14 @@ public class DoctorService {
         Specialty specialty = Arrays.stream(Specialty.values())
                 .filter(spec -> spec.getSymptoms().contains(keyword))
                 .findFirst().orElse(null);
-        var doctors = doctorRepository.findBySpecialty(specialty);
+        var doctors = doctorRepository.findBySpecialization(specialty);
         return doctors.stream().map(doctor ->
                         DoctorSearchResponseDTO.builder()
                                 .id(doctor.getId())
                                 .price(doctor.getPrice())
                                 .name(doctor.getLastName() + " " + doctor.getFirstName())
                                 .address(doctor.getAddress())
-                                .specialty(doctor.getSpecialty().getDescription())
+                                .specialization(doctor.getSpecialization().getDescription())
                                 .img(doctor.getImages().stream().map(Image::getUrl).findFirst().orElse(null))
                                 .build())
                 .collect(Collectors.toList());

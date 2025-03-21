@@ -25,7 +25,6 @@ import nlu.com.app.enums.Specialty;
 @RequiredArgsConstructor
 @AllArgsConstructor
 public class Doctor extends User {
-
   @Enumerated(value = EnumType.STRING)
   private Specialty specialization;
   private int experience;

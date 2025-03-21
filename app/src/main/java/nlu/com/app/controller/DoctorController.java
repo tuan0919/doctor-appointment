@@ -8,7 +8,6 @@ import nlu.com.app.dto.response.ApiResponse;
 import nlu.com.app.dto.response.DoctorSearchResponseDTO;
 import nlu.com.app.service.DoctorService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -42,13 +41,12 @@ public class DoctorController {
     if (responseDTOS == null || responseDTOS.isEmpty()) {
       return ApiResponse.<List<DoctorSearchResponseDTO>>builder()
               .code(HttpStatus.NOT_FOUND.value())
-              .message("Not found doctor by symptom")
+              .message("Không tìm thấy bác sĩ")
               .result(null)
               .build();
     }else {
       return ApiResponse.<List<DoctorSearchResponseDTO>>builder()
               .code(HttpStatus.OK.value())
-              .message("Success find doctor by symptom")
               .result(responseDTOS)
               .build();
     }

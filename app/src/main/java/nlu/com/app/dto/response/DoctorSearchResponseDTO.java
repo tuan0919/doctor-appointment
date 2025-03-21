@@ -14,8 +14,9 @@ import lombok.Setter;
 public class DoctorSearchResponseDTO {
   Long id;
   String name;
-  String specialty;
+  String specialization;
   String address;
   float price;
+  float avgRating;
   String img;
 }
