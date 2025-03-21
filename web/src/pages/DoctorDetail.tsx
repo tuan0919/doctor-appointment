@@ -1,3 +1,7 @@
+
+import InformationDoctor from "../components/InformationDoctor.tsx";
+import {doctorInfo, experienceInfo} from "../data/doctorsData.ts";
+import DoctorList from "./DoctorList.tsx";
 import CardDoctor from "../components/CardDoctor.tsx";
 import Schedule from "../components/Schedule.tsx";
 
@@ -24,6 +28,7 @@ interface Schedule {
     [key: string]: number[];
 }
 
+
 function DoctorDetail() {
 
     const handleBookAppointment = (id: number) => {
@@ -33,10 +38,21 @@ function DoctorDetail() {
     return (
         <div className="max-w">
 
+          
+               
             <main className="max-w">
                 <CardDoctor doctor={doctor} onBookAppointment={handleBookAppointment} />
 
                 <Schedule schedule={scheduleData} />
+              
+               <h1 className="text-center text-2xl font-bold my-4">Chào mừng đến với </h1>
+                <InformationDoctor {...doctorInfo}/>
+                <InformationDoctor {...experienceInfo}/>
+                <div className="bg-white rounded-2xl shadow-lg p-4 border border-gray-200 my-4">
+                    <h2 className="text-xl font-semibold text-blue-500 mb-4 text-left">Bác sĩ cùng chuyên khoa</h2>
+                    <DoctorList/>
+
+                </div>
             </main>
 
         </div>
