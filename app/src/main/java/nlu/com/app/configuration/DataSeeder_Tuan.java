@@ -55,7 +55,7 @@ public class DataSeeder_Tuan {
                 doctor.setFirstName("Doctor" + i);
                 doctor.setLastName("Lastname" + i);
                 doctor.setEmail("doctor" + i + "@example.com");
-                doctor.setSpecialization("Specialization " + (i % 5 + 1));
+//                doctor.setSpecialization("Specialization " + (i % 5 + 1));
                 doctor.setExperience(random.nextInt(20) + 5);
                 doctor.setQualification("MD / PhD " + i);
                 doctor.setCreatedAt(LocalDateTime.now());

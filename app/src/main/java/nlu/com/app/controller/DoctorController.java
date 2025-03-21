@@ -29,14 +29,26 @@ public class DoctorController {
   DoctorService doctorService;
 
   @GetMapping("/search-symptom")
-  public ResponseEntity<List<DoctorSearchResponseDTO>> searchDoctorBySymptom(@RequestParam String keyword) {
+  public ApiResponse<List<DoctorSearchResponseDTO>> searchDoctorBySymptom(@RequestParam String keyword) {
     List<DoctorSearchResponseDTO> responseDTOS = doctorService.searchDoctorBySymptom(keyword);
-    return new ResponseEntity<>(responseDTOS, HttpStatus.OK);
+    if (responseDTOS == null || responseDTOS.isEmpty()) {
+      return ApiResponse.<List<DoctorSearchResponseDTO>>builder()
+              .code(HttpStatus.NOT_FOUND.value())
+              .message("Not found doctor by symptom")
+              .result(null)
+              .build();
+    }else {
+      return ApiResponse.<List<DoctorSearchResponseDTO>>builder()
+              .code(HttpStatus.OK.value())
+              .message("Success find doctor by symptom")
+              .result(responseDTOS)
+              .build();
+    }
   }
 
-  @GetMapping("/search-acident/")
-  public ResponseEntity<ApiResponse<List<DoctorSearchResponseDTO>>> searchDoctorByAcident(
-      @RequestParam String keyword) {
-
-  }
+//  @GetMapping("/search-acident/")
+//  public ResponseEntity<ApiResponse<List<DoctorSearchResponseDTO>>> searchDoctorByAcident(
+//      @RequestParam String keyword) {
+//
+//  }
 }
