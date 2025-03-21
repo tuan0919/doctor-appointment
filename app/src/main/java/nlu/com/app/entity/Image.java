@@ -1,16 +1,17 @@
 package nlu.com.app.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Data;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Table(name = "Images")
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@Builder
 public class Image {
     @Id
     Long id;
