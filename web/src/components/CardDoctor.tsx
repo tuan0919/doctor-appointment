@@ -14,6 +14,9 @@ interface CardDoctorProps {
 }
 
 function CardDoctor({ doctor, onBookAppointment }: CardDoctorProps) {
+
+
+
     return (
         <div className="max-w bg-white rounded-2xl shadow-lg p-4 border border-gray-200 flex my-3">
             {/* Hình ảnh bác sĩ */}
@@ -30,8 +33,7 @@ function CardDoctor({ doctor, onBookAppointment }: CardDoctorProps) {
                 <div>
                     <h3 className="text-xl font-bold">{doctor.name}</h3>
                     <p className="text-sm text-gray-500">{doctor.specialties.join(', ')}</p>
-                    <p className="text-lg text-red-500 font-semibold mt-2">{doctor.price.toLocaleString()} VND</p>
-                    <p className="text-sm text-gray-600 mt-2">{doctor.introduction}</p>
+                    {/*<p className="text-lg text-red-500 font-semibold mt-2">{doctor.price.toLocaleString()} VND</p>*/}
                     <p className="text-sm text-gray-600 mt-2">{doctor.introduction}</p>
                 </div>
 
