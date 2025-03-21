@@ -22,6 +22,7 @@ public abstract class User {
     String email;
     String password;
     String phone;
+    String address;
     @Column(name = "create_at")
     LocalDateTime createdAt;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
