@@ -31,4 +31,20 @@ public class Role {
       inverseJoinColumns = {@JoinColumn(name = "user_id")}
   )
   Set<User> users;
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  public Set<User> getUsers() {
+    return users;
+  }
+
+  public void setUsers(Set<User> users) {
+    this.users = users;
+  }
 }
