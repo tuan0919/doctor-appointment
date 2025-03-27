@@ -3,7 +3,7 @@ package nlu.com.app.enums;
 import java.util.Arrays;
 import java.util.List;
 
-public enum Specialty {
+public enum ESpecialty {
   PULMONOLOGY("Chuyên khoa phổi", Arrays.asList("Ho", "Khó thở", "Hen suyễn", "Viêm phổi")),
   GASTROENTEROLOGY("Chuyên khoa tiêu hóa", Arrays.asList("Tiêu chảy", "Đau bụng", "Táo bón", "Nôn ói")),
   DERMATOLOGY("Chuyên khoa da liễu", Arrays.asList("Phát ban", "Dị ứng", "Nổi mẩn đỏ", "Eczema")),
@@ -14,7 +14,7 @@ public enum Specialty {
   private final String description;
   private final List<String> symptoms;
 
-  Specialty(String description, List<String> symptoms) {
+  ESpecialty(String description, List<String> symptoms) {
     this.description = description;
     this.symptoms = symptoms;
   }

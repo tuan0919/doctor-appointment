@@ -6,75 +6,99 @@ import lombok.experimental.FieldDefaults;
 import nlu.com.app.dto.response.DoctorCardDTO;
 import nlu.com.app.dto.response.DoctorDetailsDTO;
 import nlu.com.app.dto.response.DoctorSearchResponseDTO;
-import nlu.com.app.entity.Image;
+import nlu.com.app.entity.Accident;
+import nlu.com.app.entity.Doctor;
+import nlu.com.app.entity.Specialty;
+import nlu.com.app.entity.Symptom;
+import nlu.com.app.repository.AccidentRepository;
 import nlu.com.app.repository.DoctorRepository;
+import nlu.com.app.repository.SymptonRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class DoctorService {
-
+  SymptonRepository symptonRepository;
   DoctorRepository doctorRepository;
+  AccidentRepository accidentRepository;
 
-  public List<DoctorSearchResponseDTO> searchDoctorSpecialization(String specialization) {
-    var response = doctorRepository.findAllBySpecialization(specialization);
-    List<DoctorSearchResponseDTO> responseDTOS = new ArrayList<>();
-    response.forEach(data -> {
-      responseDTOS.add(DoctorSearchResponseDTO
-          .builder()
-          .id(data.getId())
-          .address(data.getAddress())
-          .name(data.getLastName() + " " + data.getFirstName())
-          .specialization(data.getSpecialization().getDescription())
-          .img(String.valueOf(
-              data.getImages().stream()
-                  .findFirst().orElse(Image.builder().url(null).build()).getUrl()))
-          .build());
-    });
-    return responseDTOS;
+  public List<DoctorSearchResponseDTO> searchDoctorsBySymptoms(String symptomNames) {
+    // Tìm tất cả triệu chứng khớp với danh sách nhập vào
+    List<Symptom> symptoms = symptonRepository.findAllByNameContainingIgnoreCase(symptomNames);
+
+    if (symptoms.isEmpty()) {
+      return Collections.emptyList(); // Không có triệu chứng nào khớp
+    }
+
+    // Lấy danh sách tất cả chuyên khoa liên quan đến các triệu chứng tìm được
+    Set<Specialty> specialties = symptoms.stream()
+            .map(Symptom::getSpecialty)
+            .collect(Collectors.toSet()); // Dùng Set để loại bỏ trùng lặp
+
+    // Tìm tất cả bác sĩ thuộc các chuyên khoa đó
+    List<Doctor> doctors = doctorRepository.findBySpecialtiesIn(specialties);
+
+    return doctors.stream()
+            .map(doctor -> DoctorSearchResponseDTO.builder()
+                    .id(doctor.getId())
+                    .img(doctor.getThumbnail())
+                    .address(doctor.getHospital())
+                    .specialization(
+                            doctor.getSpecialties().stream()
+                                    .map(Specialty::getName)
+                                    .collect(Collectors.joining(", ")) // Gộp các chuyên khoa thành chuỗi
+                    )
+                    .name(doctor.getName())
+                    .build()
+            )
+            .collect(Collectors.toList());
   }
+  public List<DoctorSearchResponseDTO> searchDoctorsByAccidents(String accident) {
+    // Tìm tất cả tai nạn khớp với danh sách nhập vào
+    List<Accident> accidents = accidentRepository.findAllByNameContainingIgnoreCase(accident);
+
+    if (accidents.isEmpty()) {
+      return Collections.emptyList(); // Không có tai nạn nào khớp
+    }
+
+    // Lấy danh sách tất cả chuyên khoa liên quan đến các tai nạn tìm được
+    Set<Specialty> specialties = accidents.stream()
+            .map(Accident::getSpecialty)
+            .collect(Collectors.toSet());
+
+    // Tìm tất cả bác sĩ thuộc các chuyên khoa đó
+    List<Doctor> doctors = doctorRepository.findBySpecialtiesIn(specialties);
+
+    return doctors.stream()
+            .map(doctor -> DoctorSearchResponseDTO.builder()
+                    .id(doctor.getId())
+                    .img(doctor.getThumbnail())
+                    .address(doctor.getHospital())
+                    .specialization(
+                            doctor.getSpecialties().stream()
+                                    .map(Specialty::getName)
+                                    .collect(Collectors.joining(", "))
+                    )
+                    .name(doctor.getName())
+                    .build()
+            )
+            .collect(Collectors.toList());
+  }
+
 
   public DoctorDetailsDTO getDoctorDetailsById(long id) {
     var obj =  doctorRepository.findById(id).get();
     var defaultTime = Arrays.asList(8,9,10,11,12,13,14,15,16,17,18,19,20,21);
 
-    return DoctorDetailsDTO.builder()
-            .name(obj.getFirstName() + " " + obj.getLastName())
-            .id(obj.getId())
-            .price((int) obj.getPrice())
-            .image(null)
-            .avgRating(obj.getAvgRating())
-            .specialties(obj.getSpecialization().getDescription())
-            .introduction(obj.getBio())
-            .experience(obj.getExperience())
-            .schedules(DoctorDetailsDTO.Schedules.builder()
-                    .mon(defaultTime)
-                    .tue(defaultTime)
-                    .wed(defaultTime)
-                    .thu(defaultTime)
-                    .fri(List.of())
-                    .sat(List.of())
-                    .sun(List.of()).build())
-            .build();
+    return null;
   }
 
   public List<DoctorCardDTO> listDoctors() {
-      return doctorRepository.findAll().stream()
-              .map(doctor -> DoctorCardDTO.builder()
-                      .id(doctor.getId())
-                      .name(doctor.getFirstName() + doctor.getLastName())
-                      .thumbnail(doctor.getImages().stream().findFirst().orElse(Image.builder().url("null").build()).getUrl())
-                      .ratings(5.3f)
-                      .visit(69)
-                      .price(0)
-                      .specialization(doctor.getSpecialization().getDescription())
-                      .hospital(doctor.getAddress()).build())
-              .toList();
+      return null;
   }
 
 

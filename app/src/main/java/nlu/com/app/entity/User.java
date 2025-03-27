@@ -1,10 +1,7 @@
 package nlu.com.app.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
@@ -13,10 +10,13 @@ import java.util.Set;
 @Entity
 @Table(name = "Users")
 @Inheritance(strategy = InheritanceType.JOINED)
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PROTECTED)
 @Getter
+@Builder
+@RequiredArgsConstructor
+@AllArgsConstructor
 @Setter
-public abstract class User {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
@@ -30,8 +30,6 @@ public abstract class User {
     String address;
     @Column(name = "create_at")
     LocalDateTime createdAt;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    Set<Image> images;
 
     public Long getId() {
         return id;
@@ -105,11 +103,4 @@ public abstract class User {
         this.createdAt = createdAt;
     }
 
-    public Set<Image> getImages() {
-        return images;
-    }
-
-    public void setImages(Set<Image> images) {
-        this.images = images;
-    }
 }

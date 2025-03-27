@@ -19,22 +19,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class DoctorController {
-
   DoctorService doctorService;
 
-  @GetMapping("/doctor/search")
-  public ApiResponse<List<DoctorSearchResponseDTO>> searchDoctor(@RequestParam String keyword) {
-    List<DoctorSearchResponseDTO> responseDTOS = doctorService.searchDoctorSpecialization(keyword);
+  @GetMapping("/doctor/symptom/search")
+  public ApiResponse<List<DoctorSearchResponseDTO>> searchDoctorBySymptom(@RequestParam String symptom) {
+    List<DoctorSearchResponseDTO> responseDTOS = doctorService.searchDoctorsBySymptoms(symptom);
     return ApiResponse.<List<DoctorSearchResponseDTO>>builder()
             .result(responseDTOS)
             .build();
   }
 
-  @GetMapping("/search-acident/")
-  public ResponseEntity<ApiResponse<List<DoctorSearchResponseDTO>>> searchDoctorByAcident(
-      @RequestParam String keyword) {
-
-      return null;
+  @GetMapping("/doctor/accident/search")
+  public ApiResponse<List<DoctorSearchResponseDTO>> searchDoctorByAccident(@RequestParam String accident) {
+    List<DoctorSearchResponseDTO> responseDTOS = doctorService.searchDoctorsByAccidents(accident);
+    return ApiResponse.<List<DoctorSearchResponseDTO>>builder()
+            .result(responseDTOS)
+            .build();
   }
 
   @GetMapping("/doctor/details")

@@ -11,10 +11,11 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+
 public class DoctorSearchResponseDTO {
   Long id;
   String name;
   String specialization;
-    String address;
+  String address;
   String img;
 }
