@@ -34,5 +34,4 @@ public class Doctor extends User {
   private Accident accident;
   private String education;
   private int visits;
-
 }

@@ -11,7 +11,7 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
 
   @Query("""
     SELECT d FROM Doctor d 
-    WHERE d.specialization LIKE %:specialization%
+    WHERE CAST(d.specialization AS string) LIKE %:specialization%
 """)
   List<Doctor> findAllBySpecialization(String specialization);
 }
