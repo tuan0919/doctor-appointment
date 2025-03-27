@@ -5,10 +5,16 @@ import {ENVIROMENT} from "../data/env.ts";
 
 export class DoctorRepository {
     private DOCTOR_API_URL = `http://${ENVIROMENT.HOST}/api/doctor`;
-    searchDoctor = async (keyword: string): Promise<ApiResponse<DoctorSearchResponse>> => {
+    searchDoctorBySymptom = async (search: string): Promise<ApiResponse<DoctorSearchResponse[]>> => {
         const response =
-            await axios.get<ApiResponse<DoctorSearchResponse>>(`${this.DOCTOR_API_URL}/search?keyword=${keyword}`, {
+            await axios.get<ApiResponse<DoctorSearchResponse[]>>(`${this.DOCTOR_API_URL}/symptom/search?symptom=${search}`, {
         });
+        return response.data;
+    };
+    searchDoctorByAccident = async (search: string): Promise<ApiResponse<DoctorSearchResponse[]>> => {
+        const response =
+            await axios.get<ApiResponse<DoctorSearchResponse[]>>(`${this.DOCTOR_API_URL}/accident/search?accident=${search}`, {
+            });
         return response.data;
     };
 }
