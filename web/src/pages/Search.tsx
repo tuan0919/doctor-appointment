@@ -1,6 +1,6 @@
-import { useState } from "react";
-import http from "../utils/http.ts";
+import {useCallback, useMemo, useState} from "react";
 import DoctorItemCard, { DoctorCardProps } from "../components/DoctorItemCard.tsx";
+import {DoctorRepository} from "../repository/DocktorRepository.ts";
 
 export const mockDoctors: DoctorCardProps[] = [
     { name: "Dr. Nguyễn Văn A", hospital: "Bệnh viện Chợ Rẫy", specialty: "Nội khoa", price: 500000, rating: 4.8, consultations: 150, imageUrl: "https://www.future-doctor.de/wp-content/uploads/2024/08/shutterstock_2480850611.jpg" },
@@ -26,25 +26,17 @@ const Search = () => {
     const doctorsPerPage = 6; // 2 hàng, 3 cột
 
     const categories = ["Tai nạn", "Triệu chứng"];
+    const doctorRepository = useMemo(() => {
+        return new DoctorRepository();
+    }, []);
+
 
     // Xử lý tìm kiếm
-    const handleSearch = async (event: React.FormEvent) => {
+    const handleSearch = useCallback(async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-
-        if (!keyword.trim()) return;
-
-        const endpoint =
-            selectedCategory === "Tai nạn"
-                ? `/search-accident?keyword=${keyword}`
-                : `/search?keyword=${keyword}`;
-
-        try {
-            const response = await http.get(endpoint);
-            setDoctors(response.data); // Giả sử API trả về danh sách bác sĩ
-        } catch (error) {
-            console.error("Lỗi tìm kiếm:", error);
-        }
-    };
+        const response = await doctorRepository.searchDoctor(keyword);
+        console.log(response)
+    }, [])
 
     // Lấy danh sách bác sĩ theo trang
     const indexOfLastDoctor = currentPage * doctorsPerPage;

@@ -1,5 +1,4 @@
 
-import InformationDoctor from "../components/InformationDoctor.tsx";
 import DoctorList from "./DoctorList.tsx";
 import CardDoctor from "../components/CardDoctor.tsx";
 import Schedule from "../components/Schedule.tsx";
