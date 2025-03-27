@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import nlu.com.app.entity.*;
+import nlu.com.app.enums.Specialty;
 import nlu.com.app.repository.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -53,9 +54,12 @@ public class DataSeeder_Tuan {
             for (int i = 1; i <= 20; i++) {
                 Doctor doctor = new Doctor();
                 doctor.setFirstName("Doctor" + i);
+                doctor.setPrice(120);
+                doctor.setAvgRating(5.0f);
                 doctor.setLastName("Lastname" + i);
+                doctor.setBio("Dr. is a highly experienced cardiologist with over 15 years in the field.");
                 doctor.setEmail("doctor" + i + "@example.com");
-                doctor.setSpecialization("Specialization " + (i % 5 + 1));
+                doctor.setSpecialization(Specialty.NEUROLOGY);
                 doctor.setExperience(random.nextInt(20) + 5);
                 doctor.setQualification("MD / PhD " + i);
                 doctor.setCreatedAt(LocalDateTime.now());

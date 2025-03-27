@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import nlu.com.app.dto.response.ApiResponse;
+import nlu.com.app.dto.response.DoctorDetailsDTO;
 import nlu.com.app.dto.response.DoctorSearchResponseDTO;
 import nlu.com.app.service.DoctorService;
 import org.springframework.http.HttpStatus;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/doctor")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class DoctorController {
 
@@ -33,5 +33,16 @@ public class DoctorController {
   public ResponseEntity<ApiResponse<List<DoctorSearchResponseDTO>>> searchDoctorByAcident(
       @RequestParam String keyword) {
 
+      return null;
+  }
+
+  @GetMapping("/doctor/details")
+  public ApiResponse<DoctorDetailsDTO> getDetailsById(@RequestParam long id) {
+    System.out.println("OK");
+    return ApiResponse.<DoctorDetailsDTO>builder()
+            .code(HttpStatus.OK.value())
+            .message("OK")
+            .result(doctorService.getDoctorDetailsById(id))
+            .build();
   }
 }
