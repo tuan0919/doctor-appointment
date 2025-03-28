@@ -3,7 +3,6 @@ import DoctorItemCard, {DoctorCardProps} from "../components/DoctorItemCard.tsx"
 
 import {DoctorRepository} from "../repository/DocktorRepository.ts";
 import {DoctorSearchResponse} from "../types/DoctorSearchResponse.ts";
-import Header from "../components/Header.tsx";
 
 
 // export const mockDoctors: DoctorCardProps[] = [
@@ -174,7 +173,7 @@ const Search = () => {
     const currentDoctors = doctors.slice(indexOfFirstDoctor, indexOfLastDoctor);
 
     return (
-        <>            <Header/>
+        <>
 
             <div className="max-w-4xl mx-auto">
                 <form className="mb-6" onSubmit={handleSearch}>
