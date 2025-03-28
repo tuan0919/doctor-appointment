@@ -26,6 +26,7 @@ function DoctorList() {
                     id: doctor.id,
                     name: doctor.name,
                     hospital: doctor.hospital,
+                    image: doctor.thumbnail,
                     specialty: doctor.specialization,
                     price: doctor.price,
                     consultations: doctor.visits,

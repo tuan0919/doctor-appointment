@@ -146,6 +146,7 @@ const Search = () => {
                 hospital: doctor.hospital,
                 specialty: doctor.specialization,
                 price: doctor.price,
+                image: doctor.thumbnail,
                 consultations: doctor.visits,
                 rating: doctor.rating,
                 imageUrl: doctor.thumbnail,
