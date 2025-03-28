@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "Symptoms")
 public class Symptom {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
