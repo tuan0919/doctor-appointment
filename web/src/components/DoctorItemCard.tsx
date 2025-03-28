@@ -1,4 +1,5 @@
 import {useNavigate} from "react-router-dom";
+import {useState} from "react";
 
 export interface DoctorCardProps {
     id: number;
@@ -10,8 +11,6 @@ export interface DoctorCardProps {
     consultations: number;
     imageUrl: string;
 }
-
-
 
 const DoctorItemCard = ({
                             id,
@@ -28,6 +27,12 @@ const DoctorItemCard = ({
     const handleViewDetail = () => {
         const searchParams = new URLSearchParams({ id: id.toString() });
         navigate(`/doctor/details?${searchParams.toString()}`);
+    };
+    const [detailData, setDetailData] = useState(null);
+    const prefetchDoctorDetail = async () => {
+        const res = await fetch(`http://localhost:8081/api/doctor/details?id=${id}`);
+        const data = await res.json();
+        setDetailData(data);
     };
 
     return (
@@ -57,6 +62,7 @@ const DoctorItemCard = ({
             </div>
             <button
                 className="mt-4 w-full bg-blue-500 text-white font-semibold py-2 rounded-lg shadow hover:bg-blue-600"
+                onMouseEnter={prefetchDoctorDetail}
                 onClick={handleViewDetail}
             >
                 Xem chi tiết

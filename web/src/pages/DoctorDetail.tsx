@@ -3,7 +3,6 @@ import Schedule from "../components/Schedule.tsx";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import {useParams, useSearchParams} from "react-router-dom";
-import Search from "./Search.tsx";
 
 function DoctorDetail() {
     const [searchParams] = useSearchParams();
@@ -18,10 +17,6 @@ function DoctorDetail() {
         }
     }, [id]);
 
-    if (!doctor) return <p>Đang tải thông tin bác sĩ...</p>;
-
-
-
     const handleBookAppointment = (doctorId: number) => {
         alert(`Đặt khám thành công cho bác sĩ có ID: ${doctorId}`);
     };
@@ -35,7 +30,7 @@ function DoctorDetail() {
                 <Schedule schedule={doctor} />
                 <div className="bg-white rounded-2xl shadow-lg p-4 border border-gray-200 my-4">
                     <h2 className="text-xl font-semibold text-blue-500 mb-4 text-left">Bác sĩ cùng chuyên khoa</h2>
-                    <Search />
+
                 </div>
             </main>
         </div>
