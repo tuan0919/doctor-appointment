@@ -48,7 +48,7 @@ const DoctorItemCard = ({
             </div>
             <div className="mt-4">
                 <h3 className="text-lg font-semibold text-gray-800">
-                    Ths BS. {name} - {hospital}
+                    Ths BS. {name}
                 </h3>
                 <p className="text-gray-500 flex items-center">🔹 {specialty}</p>
                 <p className="text-gray-500 flex items-center">💰 {price.toLocaleString()}đ</p>
