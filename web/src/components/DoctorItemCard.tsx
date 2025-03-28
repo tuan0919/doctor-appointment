@@ -21,7 +21,6 @@ const DoctorItemCard = ({
                             price,
                             rating,
                             consultations,
-                            imageUrl,
                         }: DoctorCardProps) => {
     const navigate = useNavigate();
 
@@ -34,7 +33,7 @@ const DoctorItemCard = ({
         <div className="max-w-xs bg-white rounded-2xl shadow-lg p-4 border border-gray-200">
             <div className="flex flex-col items-center">
                 <img
-                    src={imageUrl}
+                    src={"https://hips.hearstapps.com/hmg-prod/images/portrait-of-a-happy-young-doctor-in-his-clinic-royalty-free-image-1661432441.jpg?crop=0.66698xw:1xh;center,top&resize=640:*"}
                     alt={name}
                     className="w-24 h-24 rounded-full border-4 border-blue-300 object-cover"
                 />
