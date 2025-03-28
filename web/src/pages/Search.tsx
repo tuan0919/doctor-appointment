@@ -1,28 +1,27 @@
-import {useMemo, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import DoctorItemCard, { DoctorCardProps } from "../components/DoctorItemCard.tsx";
 import {DoctorRepository} from "../repository/DocktorRepository.ts";
 import {DoctorSearchResponse} from "../types/DoctorSearchResponse.ts";
 
-export const mockDoctors: DoctorCardProps[] = [
-    { name: "Dr. Nguyễn Văn A", hospital: "Bệnh viện Chợ Rẫy", specialty: "Nội khoa", price: 500000, rating: 4.8, consultations: 150, imageUrl: "https://www.future-doctor.de/wp-content/uploads/2024/08/shutterstock_2480850611.jpg" },
-    { name: "Dr. Trần Thị B", hospital: "Bệnh viện Nhi Đồng 1", specialty: "Nhi khoa", price: 400000, rating: 4.7, consultations: 200, imageUrl: "https://www.future-doctor.de/wp-content/uploads/2024/08/shutterstock_2480850611.jpg" },
-    { name: "Dr. Lê Văn C", hospital: "Bệnh viện Da Liễu", specialty: "Da liễu", price: 450000, rating: 4.6, consultations: 180, imageUrl: "https://www.future-doctor.de/wp-content/uploads/2024/08/shutterstock_2480850611.jpg" },
-    { name: "Dr. Phạm Minh D", hospital: "Bệnh viện Tim Tâm Đức", specialty: "Tim mạch", price: 600000, rating: 4.9, consultations: 220, imageUrl: "https://www.future-doctor.de/wp-content/uploads/2024/08/shutterstock_2480850611.jpg" },
-    { name: "Dr. Hoàng Thu E", hospital: "Bệnh viện 115", specialty: "Thần kinh", price: 550000, rating: 4.7, consultations: 170, imageUrl: "https://www.future-doctor.de/wp-content/uploads/2024/08/shutterstock_2480850611.jpg" },
-    { name: "Dr. Đặng Quốc F", hospital: "Bệnh viện Nhân Dân Gia Định", specialty: "Tiêu hóa", price: 480000, rating: 4.5, consultations: 140, imageUrl: "https://www.future-doctor.de/wp-content/uploads/2024/08/shutterstock_2480850611.jpg" },
-    { name: "Dr. Vũ Thị G", hospital: "Bệnh viện Mắt TP.HCM", specialty: "Mắt", price: 520000, rating: 4.8, consultations: 160, imageUrl: "https://www.future-doctor.de/wp-content/uploads/2024/08/shutterstock_2480850611.jpg" },
-    { name: "Dr. Bùi Công H", hospital: "Bệnh viện Tai Mũi Họng", specialty: "Tai Mũi Họng", price: 470000, rating: 4.6, consultations: 130, imageUrl: "https://www.future-doctor.de/wp-content/uploads/2024/08/shutterstock_2480850611.jpg" },
-    { name: "Dr. Lý Xuân I", hospital: "Bệnh viện Chấn Thương Chỉnh Hình", specialty: "Xương khớp", price: 580000, rating: 4.7, consultations: 190, imageUrl: "https://www.future-doctor.de/wp-content/uploads/2024/08/shutterstock_2480850611.jpg" },
-    { name: "Dr. Phan Thanh J", hospital: "Bệnh viện Việt Đức", specialty: "Phẫu thuật", price: 700000, rating: 4.9, consultations: 250, imageUrl: "https://www.future-doctor.de/wp-content/uploads/2024/08/shutterstock_2480850611.jpg" }
-];
-
+// export const mockDoctors: DoctorCardProps[] = [
+//     { name: "Dr. Nguyễn Văn A", hospital: "Bệnh viện Chợ Rẫy", specialty: "Nội khoa", price: 500000, rating: 4.8, consultations: 150, imageUrl: "https://www.future-doctor.de/wp-content/uploads/2024/08/shutterstock_2480850611.jpg" },
+//     { name: "Dr. Trần Thị B", hospital: "Bệnh viện Nhi Đồng 1", specialty: "Nhi khoa", price: 400000, rating: 4.7, consultations: 200, imageUrl: "https://www.future-doctor.de/wp-content/uploads/2024/08/shutterstock_2480850611.jpg" },
+//     { name: "Dr. Lê Văn C", hospital: "Bệnh viện Da Liễu", specialty: "Da liễu", price: 450000, rating: 4.6, consultations: 180, imageUrl: "https://www.future-doctor.de/wp-content/uploads/2024/08/shutterstock_2480850611.jpg" },
+//     { name: "Dr. Phạm Minh D", hospital: "Bệnh viện Tim Tâm Đức", specialty: "Tim mạch", price: 600000, rating: 4.9, consultations: 220, imageUrl: "https://www.future-doctor.de/wp-content/uploads/2024/08/shutterstock_2480850611.jpg" },
+//     { name: "Dr. Hoàng Thu E", hospital: "Bệnh viện 115", specialty: "Thần kinh", price: 550000, rating: 4.7, consultations: 170, imageUrl: "https://www.future-doctor.de/wp-content/uploads/2024/08/shutterstock_2480850611.jpg" },
+//     { name: "Dr. Đặng Quốc F", hospital: "Bệnh viện Nhân Dân Gia Định", specialty: "Tiêu hóa", price: 480000, rating: 4.5, consultations: 140, imageUrl: "https://www.future-doctor.de/wp-content/uploads/2024/08/shutterstock_2480850611.jpg" },
+//     { name: "Dr. Vũ Thị G", hospital: "Bệnh viện Mắt TP.HCM", specialty: "Mắt", price: 520000, rating: 4.8, consultations: 160, imageUrl: "https://www.future-doctor.de/wp-content/uploads/2024/08/shutterstock_2480850611.jpg" },
+//     { name: "Dr. Bùi Công H", hospital: "Bệnh viện Tai Mũi Họng", specialty: "Tai Mũi Họng", price: 470000, rating: 4.6, consultations: 130, imageUrl: "https://www.future-doctor.de/wp-content/uploads/2024/08/shutterstock_2480850611.jpg" },
+//     { name: "Dr. Lý Xuân I", hospital: "Bệnh viện Chấn Thương Chỉnh Hình", specialty: "Xương khớp", price: 580000, rating: 4.7, consultations: 190, imageUrl: "https://www.future-doctor.de/wp-content/uploads/2024/08/shutterstock_2480850611.jpg" },
+//     { name: "Dr. Phan Thanh J", hospital: "Bệnh viện Việt Đức", specialty: "Phẫu thuật", price: 700000, rating: 4.9, consultations: 250, imageUrl: "https://www.future-doctor.de/wp-content/uploads/2024/08/shutterstock_2480850611.jpg" }
+// ];
 
 
 const Search = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState("Loại");
     const [keyword, setKeyword] = useState("");
-    const [doctors, setDoctors] = useState<DoctorCardProps[]>(mockDoctors);
+    const [doctors, setDoctors] = useState<DoctorCardProps[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const doctorsPerPage = 6; // 2 hàng, 3 cột
 
@@ -32,25 +31,59 @@ const Search = () => {
         return new DoctorRepository();
     }, []);
 
-    // Xử lý tìm kiếm
+    // // Xử lý tìm kiếm
+    // const handleSearch = async (event: React.FormEvent<HTMLFormElement>) => {
+    //     event.preventDefault();
+    //     const response =
+    //         searchType === 'symptom' ?
+    //             await doctorRepository.searchDoctorBySymptom(keyword) :
+    //             await doctorRepository.searchDoctorByAccident(keyword);
+    //     console.log(`Kết quả search ${selectedCategory} theo từ khóa ${keyword}:`);
+    //     console.log(response.result)
+    //     setDoctors(response.result.map((doctor: DoctorSearchResponse) => ({
+    //         name: doctor.name,
+    //         hospital: doctor.hospital,
+    //         specialty: doctor.specialization,
+    //         price: doctor.price,
+    //         consultations: doctor.visits,
+    //         rating: doctor.rating,
+    //         imageUrl: doctor.thumbnail,
+    //     })));
+    // }
+
+    const fetchDoctors = async (searchKeyword: string) => {
+        try {
+            const response =
+                searchType === 'symptom'
+                    ? await doctorRepository.searchDoctorBySymptom(searchKeyword)
+                    : await doctorRepository.searchDoctorByAccident(searchKeyword);
+
+            setDoctors(response.result.map((doctor: DoctorSearchResponse) => ({
+                id: doctor.id,
+                name: doctor.name,
+                hospital: doctor.hospital,
+                specialty: doctor.specialization,
+                price: doctor.price,
+                consultations: doctor.visits,
+                rating: doctor.rating,
+                imageUrl: doctor.thumbnail,
+            })));
+        } catch (error) {
+            console.error("Lỗi khi tìm kiếm bác sĩ:", error);
+            setDoctors([]);
+        }
+    };
+
     const handleSearch = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const response =
-            searchType === 'symptom' ?
-                await doctorRepository.searchDoctorBySymptom(keyword) :
-                await doctorRepository.searchDoctorByAccident(keyword);
-        console.log(`Kết quả search ${selectedCategory} theo từ khóa ${keyword}:`);
-        console.log(response.result)
-        setDoctors(response.result.map((doctor: DoctorSearchResponse) => ({
-            name: doctor.name,
-            hospital: doctor.hospital,
-            specialty: doctor.specialization,
-            price: doctor.price,
-            consultations: doctor.visits,
-            rating: doctor.rating,
-            imageUrl: doctor.thumbnail,
-        })));
-    }
+        await fetchDoctors(keyword.trim() === "" ? " " : keyword);
+    };
+
+    // ✅ Fetch mặc định khi vừa vào trang
+    useEffect(() => {
+        fetchDoctors(" ");
+    }, [searchType]); // Khi đổi loại search cũng fetch lại luôn
+
 
     // Lấy danh sách bác sĩ theo trang
     const indexOfLastDoctor = currentPage * doctorsPerPage;

@@ -1,6 +1,7 @@
 import {useNavigate} from "react-router-dom";
 
 export interface DoctorCardProps {
+    id: number;
     name: string;
     hospital: string;
     specialty: string;
@@ -11,7 +12,9 @@ export interface DoctorCardProps {
 }
 
 
+
 const DoctorItemCard = ({
+                            id,
                             name,
                             hospital,
                             specialty,
@@ -21,6 +24,12 @@ const DoctorItemCard = ({
                             imageUrl,
                         }: DoctorCardProps) => {
     const navigate = useNavigate();
+
+    const handleViewDetail = () => {
+        const searchParams = new URLSearchParams({ id: id.toString() });
+        navigate(`/doctor/details?${searchParams.toString()}`);
+    };
+
     return (
         <div className="max-w-xs bg-white rounded-2xl shadow-lg p-4 border border-gray-200">
             <div className="flex flex-col items-center">
@@ -48,7 +57,7 @@ const DoctorItemCard = ({
             </div>
             <button
                 className="mt-4 w-full bg-blue-500 text-white font-semibold py-2 rounded-lg shadow hover:bg-blue-600"
-                onClick={() => navigate(`/doctor/${encodeURIComponent(name)}`)}
+                onClick={handleViewDetail}
             >
                 Xem chi tiết
             </button>
