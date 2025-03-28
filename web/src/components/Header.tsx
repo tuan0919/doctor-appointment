@@ -4,7 +4,11 @@ function Header() {
             {/* Top Section */}
             <div className="max-w-7xl mx-auto flex justify-between items-center p-4">
                 {/* Logo */}
-                <h1 className="text-3xl font-extrabold text-blue-500 pr-3 whitespace-nowrap">Hi Doctor</h1>
+                <a href="http://localhost:5173/home">
+                    <h1 className="text-3xl font-extrabold text-blue-500 pr-3 whitespace-nowrap">Hi Doctor</h1>
+                </a>
+
+                {/* Navigation */}
 
             </div>
 

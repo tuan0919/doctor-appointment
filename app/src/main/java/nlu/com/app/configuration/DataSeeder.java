@@ -3,16 +3,17 @@ package nlu.com.app.configuration;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import nlu.com.app.entity.Accident;
-import nlu.com.app.entity.Doctor;
-import nlu.com.app.entity.Specialty;
-import nlu.com.app.entity.Symptom;
+import nlu.com.app.entity.*;
 import nlu.com.app.repository.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Configuration
 @RequiredArgsConstructor
@@ -26,6 +27,7 @@ public class DataSeeder {
     SpecialityRepository specialityRepository;
     SymptonRepository symptonRepository;
     AccidentRepository accidentRepository;
+    ScheduleRepository scheduleRepository;
 
     @Bean
     CommandLineRunner runner() {
@@ -55,11 +57,11 @@ public class DataSeeder {
                     Doctor.builder()
                             .name("Lâm Việt Trung")
                             .bio("Phó Giáo sư, Tiến sĩ, Bác sĩ Lâm Việt Trung đã có hơn 20 năm kinh nghiệm trong lĩnh vực Tiêu hóa.")
-                            .price(100000)
+                            .price(200000)
                             .experience(20)
                             .education("Tiến sĩ")
                             .avgRating(4.9f)
-                            .thumbnail("https://images.unsplash.com/photo-1537368910025-700350fe46c7")
+                            .thumbnail("https://static.vecteezy.com/system/resources/thumbnails/026/375/249/small_2x/ai-generative-portrait-of-confident-male-doctor-in-white-coat-and-stethoscope-standing-with-arms-crossed-and-looking-at-camera-photo.jpg")
                             .visits(341)
                             .hospital("Bệnh viện Chợ Rẫy")
                             .specialties(List.of(specialities.get(1)))
@@ -68,11 +70,11 @@ public class DataSeeder {
                     Doctor.builder()
                             .name("Nguyễn Văn A")
                             .bio("Tiến sĩ, Bác sĩ Nguyễn Văn A, chuyên gia về hô hấp, với hơn 15 năm kinh nghiệm.")
-                            .price(120000)
+                            .price(200000)
                             .experience(15)
                             .education("Tiến sĩ")
                             .avgRating(4.8f)
-                            .thumbnail("https://images.unsplash.com/photo-1576091160399-112ba8d25d1d")
+                            .thumbnail("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRripLcqGUKIBfgbtmux6U1UY9UkgezqzJzFw&s")
                             .visits(280)
                             .hospital("Bệnh viện Đại học Y Dược TP.HCM")
                             .specialties(List.of(specialities.get(0)))
@@ -81,11 +83,11 @@ public class DataSeeder {
                     Doctor.builder()
                             .name("Lê Thị B")
                             .bio("Thạc sĩ, Bác sĩ Lê Thị B, chuyên khoa da liễu với hơn 10 năm kinh nghiệm.")
-                            .price(90000)
+                            .price(200000)
                             .experience(10)
                             .education("Thạc sĩ")
                             .avgRating(4.7f)
-                            .thumbnail("https://images.unsplash.com/photo-1527613426441-4da17471b66d")
+                            .thumbnail("https://t4.ftcdn.net/jpg/02/60/04/09/360_F_260040900_oO6YW1sHTnKxby4GcjCvtypUCWjnQRg5.jpg")
                             .visits(250)
                             .hospital("Bệnh viện Da Liễu")
                             .specialties(List.of(specialities.get(2)))
@@ -94,11 +96,11 @@ public class DataSeeder {
                     Doctor.builder()
                             .name("Trần Văn C")
                             .bio("Bác sĩ Trần Văn C, chuyên khoa thần kinh, nhiều năm nghiên cứu và giảng dạy tại ĐH Y Dược.")
-                            .price(110000)
+                            .price(200000)
                             .experience(18)
                             .education("Bác sĩ chuyên khoa II")
                             .avgRating(4.6f)
-                            .thumbnail("https://images.unsplash.com/photo-1603398938378-48ab2b4a08f0")
+                            .thumbnail("https://static.vecteezy.com/system/resources/previews/041/408/858/non_2x/ai-generated-a-smiling-doctor-with-glasses-and-a-white-lab-coat-isolated-on-transparent-background-free-png.png")
                             .visits(310)
                             .hospital("Bệnh viện Nhân Dân 115")
                             .specialties(List.of(specialities.get(3)))
@@ -107,11 +109,11 @@ public class DataSeeder {
                     Doctor.builder()
                             .name("Phạm Văn D")
                             .bio("Giáo sư, Tiến sĩ Phạm Văn D, chuyên khoa bệnh truyền nhiễm, đã từng công tác tại WHO.")
-                            .price(150000)
+                            .price(200000)
                             .experience(25)
                             .education("Giáo sư")
                             .avgRating(4.9f)
-                            .thumbnail("https://images.unsplash.com/photo-1584467735871-768b6df7c63b")
+                            .thumbnail("https://media.istockphoto.com/id/177373093/photo/indian-male-doctor.jpg?s=612x612&w=0&k=20&c=5FkfKdCYERkAg65cQtdqeO_D0JMv6vrEdPw3mX1Lkfg=")
                             .visits(500)
                             .hospital("Viện Pasteur TP.HCM")
                             .specialties(List.of(specialities.get(4)))
@@ -120,11 +122,11 @@ public class DataSeeder {
                     Doctor.builder()
                             .name("Nguyễn Thị E")
                             .bio("Thạc sĩ, Bác sĩ Nguyễn Thị E, chuyên khoa nhi với hơn 12 năm kinh nghiệm điều trị trẻ em.")
-                            .price(95000)
+                            .price(200000)
                             .experience(12)
                             .education("Thạc sĩ")
                             .avgRating(4.8f)
-                            .thumbnail("https://images.unsplash.com/photo-1629904853893-a38d1ec99403")
+                            .thumbnail("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNICvo5F6bkwXJxqmfjpWJmnPXiZ-ujTlECw&s")
                             .visits(270)
                             .hospital("Bệnh viện Nhi Đồng 1")
                             .specialties(List.of(specialities.get(5)))
@@ -133,11 +135,11 @@ public class DataSeeder {
                     Doctor.builder()
                             .name("Đặng Minh F")
                             .bio("Bác sĩ Đặng Minh F, chuyên khoa tim mạch, đã thực hiện nhiều ca phẫu thuật tim thành công.")
-                            .price(130000)
+                            .price(200000)
                             .experience(22)
                             .education("Tiến sĩ")
                             .avgRating(4.8f)
-                            .thumbnail("https://images.unsplash.com/photo-1561207169-2c3f3222b247")
+                            .thumbnail("https://hips.hearstapps.com/hmg-prod/images/portrait-of-a-happy-young-doctor-in-his-clinic-royalty-free-image-1661432441.jpg")
                             .visits(400)
                             .hospital("Viện Tim TP.HCM")
                             .specialties(List.of(specialities.get(6)))
@@ -146,11 +148,11 @@ public class DataSeeder {
                     Doctor.builder()
                             .name("Hồ Văn G")
                             .bio("Tiến sĩ, Bác sĩ Hồ Văn G, chuyên khoa tiết niệu, chuyên gia phẫu thuật nội soi hiện đại.")
-                            .price(110000)
+                            .price(200000)
                             .experience(17)
                             .education("Tiến sĩ")
                             .avgRating(4.7f)
-                            .thumbnail("https://images.unsplash.com/photo-1579684385127-1ef15d508118")
+                            .thumbnail("https://familydoctor.org/wp-content/uploads/2018/02/41808433_l.jpg")
                             .visits(320)
                             .hospital("Bệnh viện Bình Dân")
                             .specialties(List.of(specialities.get(7)))
@@ -159,11 +161,11 @@ public class DataSeeder {
                     Doctor.builder()
                             .name("Trịnh Ngọc H")
                             .bio("Bác sĩ chuyên khoa I Trịnh Ngọc H, chuyên khoa nội tiết, có nhiều công trình nghiên cứu về tiểu đường.")
-                            .price(100000)
+                            .price(200000)
                             .experience(14)
                             .education("Bác sĩ chuyên khoa I")
                             .avgRating(4.6f)
-                            .thumbnail("https://images.unsplash.com/photo-1511174511562-5f7f18b874f8")
+                            .thumbnail("https://thumbs.dreamstime.com/b/young-male-doctor-close-up-happy-looking-camera-56751540.jpg")
                             .visits(290)
                             .hospital("Bệnh viện Nội Tiết Trung Ương")
                             .specialties(List.of(specialities.get(8)))
@@ -172,16 +174,22 @@ public class DataSeeder {
                     Doctor.builder()
                             .name("Nguyễn Văn I")
                             .bio("Giáo sư, Tiến sĩ Nguyễn Văn I, chuyên khoa cơ xương khớp, chuyên điều trị các bệnh thoái hóa khớp.")
-                            .price(140000)
+                            .price(200000)
                             .experience(30)
                             .education("Giáo sư")
                             .avgRating(4.9f)
-                            .thumbnail("https://images.unsplash.com/photo-1629904854317-6af1f040b34c")
+                            .thumbnail("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5XzsHpov1XRSZKMacf1_MUKB-u5br3HP3ug&s")
                             .visits(600)
                             .hospital("Bệnh viện Chấn Thương Chỉnh Hình")
                             .specialties(List.of(specialities.get(9)))
                             .build()
             );
+            doctors.stream().forEach(doctor -> {
+                doctor.setSchedules(generateSchedules(
+                        LocalDate.of(2025, 3, 28),
+                        LocalDate.of(2025, 4, 4),
+                        doctor));
+            });
             var accidents = List.of(
                     Accident.builder().name("Gãy tay").specialty(specialities.get(9)).build(), // Cơ xương khớp
                     Accident.builder().name("Gãy chân").specialty(specialities.get(9)).build(), // Cơ xương khớp
@@ -231,5 +239,33 @@ public class DataSeeder {
             symptonRepository.saveAll(symptoms);
             accidentRepository.saveAll(accidents);
         };
+
+    }
+
+    public static List<Schedule> generateSchedules(LocalDate startDate, LocalDate endDate, Doctor doctor) {
+        List<Schedule> schedules = new ArrayList<>();
+        Random random = new Random();
+
+        for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
+            int numSchedules = random.nextInt(3) + 1; // Mỗi ngày có từ 1 đến 3 lịch làm việc
+
+            for (int i = 0; i < numSchedules; i++) {
+                int startHour = random.nextInt(10) + 7; // Giờ bắt đầu từ 7h đến 16h
+                int duration = random.nextInt(3) + 1;  // Khoảng thời gian từ 1 đến 3 giờ
+                int endHour = Math.min(startHour + duration, 18); // Giờ kết thúc tối đa là 18h
+                int maxPatients = random.nextInt(3) + 1;
+
+                schedules.add(Schedule.builder()
+                        .startTime(startHour)
+                        .endTime(endHour)
+                        .date(date)
+                        .maxPatients(maxPatients)
+                        .available(true)
+                        .doctor(doctor)
+                        .build());
+            }
+        }
+
+        return schedules;
     }
 }

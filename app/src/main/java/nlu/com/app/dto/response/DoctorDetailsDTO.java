@@ -7,6 +7,7 @@ import lombok.experimental.FieldDefaults;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @FieldDefaults(level =  AccessLevel.PRIVATE)
@@ -19,18 +20,14 @@ public class DoctorDetailsDTO {
     float avgRating;
     int price;
     String introduction;
-    Schedules schedules;
+    Map<String, List<Time>> schedules;
     int experience;
 
     @Data
     @Builder
-    public static class Schedules {
-        List<Integer> mon;
-        List<Integer> tue;
-        List<Integer> wed;
-        List<Integer> thu;
-        List<Integer> fri;
-        List<Integer> sat;
-        List<Integer> sun;
+    public static class Time {
+        int start;
+        int end;
+        int maxPatients;
     }
 }

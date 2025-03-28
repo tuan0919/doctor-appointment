@@ -1,30 +1,33 @@
 package nlu.com.app.service;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import nlu.com.app.dto.response.DoctorCardDTO;
 import nlu.com.app.dto.response.DoctorDetailsDTO;
 import nlu.com.app.dto.response.DoctorSearchResponseDTO;
 import nlu.com.app.entity.Accident;
 import nlu.com.app.entity.Doctor;
 import nlu.com.app.entity.Specialty;
 import nlu.com.app.entity.Symptom;
+import nlu.com.app.mapper.DoctorMapper;
 import nlu.com.app.repository.AccidentRepository;
 import nlu.com.app.repository.DoctorRepository;
 import nlu.com.app.repository.SymptonRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-import java.util.stream.Collectors;
-
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class DoctorService {
+
   SymptonRepository symptonRepository;
   DoctorRepository doctorRepository;
   AccidentRepository accidentRepository;
+  DoctorMapper doctorMapper;
 
   public List<DoctorSearchResponseDTO> searchDoctorsBySymptoms(String symptomNames) {
     // Tìm tất cả triệu chứng khớp với danh sách nhập vào
@@ -60,6 +63,7 @@ public class DoctorService {
             )
             .collect(Collectors.toList());
   }
+
   public List<DoctorSearchResponseDTO> searchDoctorsByAccidents(String accident) {
     // Tìm tất cả tai nạn khớp với danh sách nhập vào
     List<Accident> accidents = accidentRepository.findAllByNameContainingIgnoreCase(accident);
@@ -95,17 +99,15 @@ public class DoctorService {
             .collect(Collectors.toList());
   }
 
-
-  public DoctorDetailsDTO getDoctorDetailsById(long id) {
-    var obj =  doctorRepository.findById(id).get();
-    var defaultTime = Arrays.asList(8,9,10,11,12,13,14,15,16,17,18,19,20,21);
-
-    return null;
+  public DoctorDetailsDTO getDoctorDetails(long id) {
+    var doctor = doctorRepository.findById(id)
+            .orElse(null);
+    var doctorDetails = doctorMapper.toDoctorDetailsDTO(doctor);
+    return doctorDetails;
   }
 
-  public List<DoctorCardDTO> listDoctors() {
-      return null;
+  public List<DoctorSearchResponseDTO> getListDoctor() {
+    return this.searchDoctorsByAccidents("");
   }
-
 
 }

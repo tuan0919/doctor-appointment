@@ -1,11 +1,20 @@
 
-interface Doctor {
+export interface DoctorSchedule {
+    start: number;
+    end: number;
+    maxPatients: number;
+}
+
+export interface Doctor {
     id: number;
     name: string;
     image: string;
-    specialties: string[];
+    specialties: string;
     price: number;
     introduction: string;
+    avgRating: number;
+    experience: number;
+    schedules: Record<string, DoctorSchedule[]>;
 }
 
 interface CardDoctorProps {
@@ -32,8 +41,9 @@ function CardDoctor({ doctor, onBookAppointment }: CardDoctorProps) {
             <div className="w-8/12 pl-4 flex flex-col justify-between">
                 <div>
                     <h3 className="text-xl font-bold">{doctor.name}</h3>
-                    <p className="text-sm text-gray-500">{doctor.specialties.join(', ')}</p>
-                    {/*<p className="text-lg text-red-500 font-semibold mt-2">{doctor.price.toLocaleString()} VND</p>*/}
+                    <p className="text-sm text-gray-500">{doctor.specialties}</p>
+                    {/*<p className="text-sm text-gray-500">{doctor.specialties.join(', ')}</p>*/}
+                    <p className="text-lg text-red-500 font-semibold mt-2">{doctor.price.toLocaleString()} VND</p>
                     <p className="text-sm text-gray-600 mt-2">{doctor.introduction}</p>
                 </div>
 

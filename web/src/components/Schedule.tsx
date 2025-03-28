@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import {Doctor} from "./CardDoctor.tsx";
 
 interface ScheduleProps {
-    schedule: { [key: string]: number[] };
+    // schedule: { [key: string]: number[] };
+    schedule: Doctor;
 }
 
 const daysOfWeek: { [key: string]: string } = {
@@ -31,7 +33,7 @@ const Schedule: React.FC<ScheduleProps> = ({ schedule }) => {
         <div className="max-w-md mx-auto mt-8 p-4 bg-white shadow-lg rounded-lg">
             <h4 className="text-2xl font-bold text-center mb-4 text-blue-600">Lịch làm việc</h4>
             <div className="space-y-4">
-                {Object.entries(schedule).map(([day, hours]) => (
+                {Object.entries(schedule.schedules).map(([day, hours]) => (
                     <div key={day} className="bg-gray-50 p-3 rounded-lg shadow-sm">
                         {/* Tên ngày */}
                         <div
@@ -40,24 +42,43 @@ const Schedule: React.FC<ScheduleProps> = ({ schedule }) => {
                                 selectedDay === day ? 'bg-blue-500 text-white' : 'hover:bg-blue-100'
                             }`}
                         >
-                            {daysOfWeek[day.toLowerCase()] || day}
+                            {daysOfWeek[day] || day}
                         </div>
 
                         {/* Giờ khám */}
                         {selectedDay === day && (
+                            // <div className="flex flex-wrap gap-2 mt-3 justify-center">
+                            //     {hours.length > 0 ? (
+                            //         hours.map((hour) => (
+                            //             <button
+                            //                 key={hour}
+                            //                 onClick={() => handleSelectHour(hour)}
+                            //                 className={`px-4 py-2 text-sm rounded-lg transition-all shadow-md ${
+                            //                     selectedHour === hour
+                            //                         ? 'bg-red-500 text-white'
+                            //                         : 'bg-gray-200 hover:bg-green-100 hover:text-green-600'
+                            //                 }`}
+                            //             >
+                            //                 {hour}h
+                            //             </button>
+                            //         ))
+                            //     ) : (
+                            //         <span className="text-gray-500 italic">Nghỉ</span>
+                            //     )}
+                            // </div>
                             <div className="flex flex-wrap gap-2 mt-3 justify-center">
                                 {hours.length > 0 ? (
-                                    hours.map((hour) => (
+                                    hours.map((hour, index) => (
                                         <button
-                                            key={hour}
-                                            onClick={() => handleSelectHour(hour)}
+                                            key={index}
+                                            onClick={() => handleSelectHour(hour.start)} // SỬA: Dùng start làm giờ đại diện
                                             className={`px-4 py-2 text-sm rounded-lg transition-all shadow-md ${
-                                                selectedHour === hour
+                                                selectedHour === hour.start
                                                     ? 'bg-red-500 text-white'
                                                     : 'bg-gray-200 hover:bg-green-100 hover:text-green-600'
                                             }`}
                                         >
-                                            {hour}h
+                                            {`${hour.start}h - ${hour.end}h`}
                                         </button>
                                     ))
                                 ) : (

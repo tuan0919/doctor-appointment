@@ -4,20 +4,30 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import {useParams, useSearchParams} from "react-router-dom";
 import Search from "./Search.tsx";
+import DoctorList from "./DoctorList.tsx";
 
 function DoctorDetail() {
     const [searchParams] = useSearchParams();
     const id = searchParams.get("id");
     const [doctor, setDoctor] = useState<any>(null);
+    console.log('render')
 
+    // useEffect(() => {
+    //     console.log('useEffect')
+    //     if (id) {
+    //         axios.get(`http://localhost:8081/api/doctor/details?id=${id}`)
+    //             .then((res) => setDoctor(res.data))
+    //             .catch((err) => console.error(err));
+    //     }
+    // }, [id]);
     useEffect(() => {
+        console.log('useEffect');
         if (id) {
             axios.get(`http://localhost:8081/api/doctor/details?id=${id}`)
-                .then((res) => setDoctor(res.data))
+                .then((res) => setDoctor(res.data.result)) // SỬA: Lấy result từ API response
                 .catch((err) => console.error(err));
         }
     }, [id]);
-
     if (!doctor) return <p>Đang tải thông tin bác sĩ...</p>;
 
 
@@ -35,7 +45,8 @@ function DoctorDetail() {
                 <Schedule schedule={doctor} />
                 <div className="bg-white rounded-2xl shadow-lg p-4 border border-gray-200 my-4">
                     <h2 className="text-xl font-semibold text-blue-500 mb-4 text-left">Bác sĩ cùng chuyên khoa</h2>
-                    <Search />
+                    {/*<Search />*/}
+                    <DoctorList/>
                 </div>
             </main>
         </div>
