@@ -3,16 +3,17 @@ package nlu.com.app.configuration;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import nlu.com.app.entity.Accident;
-import nlu.com.app.entity.Doctor;
-import nlu.com.app.entity.Specialty;
-import nlu.com.app.entity.Symptom;
+import nlu.com.app.entity.*;
 import nlu.com.app.repository.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Configuration
 @RequiredArgsConstructor
@@ -26,6 +27,7 @@ public class DataSeeder {
     SpecialityRepository specialityRepository;
     SymptonRepository symptonRepository;
     AccidentRepository accidentRepository;
+    ScheduleRepository scheduleRepository;
 
     @Bean
     CommandLineRunner runner() {
@@ -182,6 +184,12 @@ public class DataSeeder {
                             .specialties(List.of(specialities.get(9)))
                             .build()
             );
+            doctors.stream().forEach(doctor -> {
+                doctor.setSchedules(generateSchedules(
+                        LocalDate.of(2025, 3, 28),
+                        LocalDate.of(2025, 4, 4),
+                        doctor));
+            });
             var accidents = List.of(
                     Accident.builder().name("Gãy tay").specialty(specialities.get(9)).build(), // Cơ xương khớp
                     Accident.builder().name("Gãy chân").specialty(specialities.get(9)).build(), // Cơ xương khớp
@@ -231,5 +239,33 @@ public class DataSeeder {
             symptonRepository.saveAll(symptoms);
             accidentRepository.saveAll(accidents);
         };
+
+    }
+
+    public static List<Schedule> generateSchedules(LocalDate startDate, LocalDate endDate, Doctor doctor) {
+        List<Schedule> schedules = new ArrayList<>();
+        Random random = new Random();
+
+        for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
+            int numSchedules = random.nextInt(3) + 1; // Mỗi ngày có từ 1 đến 3 lịch làm việc
+
+            for (int i = 0; i < numSchedules; i++) {
+                int startHour = random.nextInt(10) + 7; // Giờ bắt đầu từ 7h đến 16h
+                int duration = random.nextInt(3) + 1;  // Khoảng thời gian từ 1 đến 3 giờ
+                int endHour = Math.min(startHour + duration, 18); // Giờ kết thúc tối đa là 18h
+                int maxPatients = random.nextInt(3) + 1;
+
+                schedules.add(Schedule.builder()
+                                .startTime(startHour)
+                                .endTime(endHour)
+                                .date(date)
+                                .maxPatients(maxPatients)
+                                .available(true)
+                                .doctor(doctor)
+                        .build());
+            }
+        }
+
+        return schedules;
     }
 }
