@@ -1,5 +1,7 @@
 package nlu.com.app.enums;
 
+import nlu.com.app.entity.Accident;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -33,10 +35,10 @@ public enum EAccident {
     return treatmentSpecialty;
   }
 
-  public static Accident findSpecialtyEnumByAccident(String keyword) {
-    for (Accident accident : values()) {
-      if (accident.keywords.contains(keyword)) {
-        return accident;
+  public static String findSpecialtyEnumByAccident(String keyword) {
+    for (EAccident EAccident : values()) {
+      if (EAccident.keywords.contains(keyword)) {
+        return EAccident.treatmentSpecialty;
       }
     }
     return null;

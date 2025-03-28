@@ -39,4 +39,7 @@ public class Doctor {
           inverseJoinColumns = {@JoinColumn(name = "specialty_id")}
   )
   private List<Specialty> specialties;
+
+  @OneToOne
+  private User user;
 }
