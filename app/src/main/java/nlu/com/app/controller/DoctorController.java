@@ -43,7 +43,7 @@ public class DoctorController {
     return ApiResponse.<DoctorDetailsDTO>builder()
             .code(HttpStatus.OK.value())
             .message("OK")
-            .result(doctorService.getDoctorDetailsById(id))
+            .result(doctorService.getDoctorDetails(id))
             .build();
   }
 }

@@ -39,4 +39,6 @@ public class Doctor {
           inverseJoinColumns = {@JoinColumn(name = "specialty_id")}
   )
   private List<Specialty> specialties;
+  @OneToMany(mappedBy = "doctor", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Schedule> schedules;
 }
