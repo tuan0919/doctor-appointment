@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class DoctorController {
   DoctorService doctorService;
-
   @GetMapping("/doctor/symptom/search")
   public ApiResponse<List<DoctorSearchResponseDTO>> searchDoctorBySymptom(@RequestParam String symptom) {
     List<DoctorSearchResponseDTO> responseDTOS = doctorService.searchDoctorsBySymptoms(symptom);
