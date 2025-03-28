@@ -4,7 +4,7 @@ class Http {
     instance: AxiosInstance;
     constructor() {
         this.instance = axios.create({
-            baseURL: "http://localhost:8085/api/",
+            baseURL: "http://localhost:8081/api/doctor/",
             timeout: 10000,
         });
     }

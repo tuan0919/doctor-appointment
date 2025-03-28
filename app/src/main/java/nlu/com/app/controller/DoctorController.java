@@ -5,50 +5,45 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import nlu.com.app.dto.response.ApiResponse;
+import nlu.com.app.dto.response.DoctorDetailsDTO;
 import nlu.com.app.dto.response.DoctorSearchResponseDTO;
 import nlu.com.app.service.DoctorService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/doctor")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class DoctorController {
-
   DoctorService doctorService;
 
-  @GetMapping("/search-accident")
-  public ApiResponse<List<DoctorSearchResponseDTO>> searchDoctorByAccident(
-      @RequestParam String keyword) {
-    var response = doctorService.searchDoctorByAccident(keyword);
-    if (response != null) {
-      return ApiResponse.<List<DoctorSearchResponseDTO>>builder().result(response).build();
-    }
+  @GetMapping("/doctor/symptom/search")
+  public ApiResponse<List<DoctorSearchResponseDTO>> searchDoctorBySymptom(@RequestParam String symptom) {
+    List<DoctorSearchResponseDTO> responseDTOS = doctorService.searchDoctorsBySymptoms(symptom);
     return ApiResponse.<List<DoctorSearchResponseDTO>>builder()
-        .result(null)
-        .message("không có dữ liệu")
-        .build();
+            .result(responseDTOS)
+            .build();
   }
 
-  @GetMapping("/search-symptom")
-  public ApiResponse<List<DoctorSearchResponseDTO>> searchDoctorBySymptom(@RequestParam String keyword) {
-    List<DoctorSearchResponseDTO> responseDTOS = doctorService.searchDoctorBySymptom(keyword);
-    if (responseDTOS == null || responseDTOS.isEmpty()) {
-      return ApiResponse.<List<DoctorSearchResponseDTO>>builder()
-              .code(HttpStatus.NOT_FOUND.value())
-              .message("Không tìm thấy bác sĩ")
-              .result(null)
-              .build();
-    }else {
-      return ApiResponse.<List<DoctorSearchResponseDTO>>builder()
-              .code(HttpStatus.OK.value())
-              .result(responseDTOS)
-              .build();
-    }
+  @GetMapping("/doctor/accident/search")
+  public ApiResponse<List<DoctorSearchResponseDTO>> searchDoctorByAccident(@RequestParam String accident) {
+    List<DoctorSearchResponseDTO> responseDTOS = doctorService.searchDoctorsByAccidents(accident);
+    return ApiResponse.<List<DoctorSearchResponseDTO>>builder()
+            .result(responseDTOS)
+            .build();
+  }
+
+  @GetMapping("/doctor/details")
+  public ApiResponse<DoctorDetailsDTO> getDetailsById(@RequestParam long id) {
+    System.out.println("OK");
+    return ApiResponse.<DoctorDetailsDTO>builder()
+            .code(HttpStatus.OK.value())
+            .message("OK")
+            .result(doctorService.getDoctorDetailsById(id))
+            .build();
   }
 }

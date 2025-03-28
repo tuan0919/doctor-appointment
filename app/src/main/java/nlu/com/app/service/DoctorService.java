@@ -1,87 +1,111 @@
 package nlu.com.app.service;
 
-import java.util.*;
-
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import nlu.com.app.dto.response.DoctorCardDTO;
+import nlu.com.app.dto.response.DoctorDetailsDTO;
 import nlu.com.app.dto.response.DoctorSearchResponseDTO;
+import nlu.com.app.entity.Accident;
 import nlu.com.app.entity.Doctor;
-import nlu.com.app.entity.Image;
-import nlu.com.app.enums.Accident;
-import nlu.com.app.enums.Specialty;
+import nlu.com.app.entity.Specialty;
+import nlu.com.app.entity.Symptom;
+import nlu.com.app.repository.AccidentRepository;
 import nlu.com.app.repository.DoctorRepository;
+import nlu.com.app.repository.SymptonRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class DoctorService {
-
+  SymptonRepository symptonRepository;
   DoctorRepository doctorRepository;
+  AccidentRepository accidentRepository;
+
+  public List<DoctorSearchResponseDTO> searchDoctorsBySymptoms(String symptomNames) {
+    // Tìm tất cả triệu chứng khớp với danh sách nhập vào
+    List<Symptom> symptoms = symptonRepository.findAllByNameContainingIgnoreCase(symptomNames);
+
+    if (symptoms.isEmpty()) {
+      return Collections.emptyList(); // Không có triệu chứng nào khớp
+    }
+
+    // Lấy danh sách tất cả chuyên khoa liên quan đến các triệu chứng tìm được
+    Set<Specialty> specialties = symptoms.stream()
+            .map(Symptom::getSpecialty)
+            .collect(Collectors.toSet()); // Dùng Set để loại bỏ trùng lặp
+
+    // Tìm tất cả bác sĩ thuộc các chuyên khoa đó
+    List<Doctor> doctors = doctorRepository.findBySpecialtiesIn(specialties);
+
+    return doctors.stream()
+            .map(doctor -> DoctorSearchResponseDTO.builder()
+                    .id(doctor.getId())
+                    .thumbnail(doctor.getThumbnail())
+                    .hospital(doctor.getHospital())
+                    .price(doctor.getPrice())
+                    .visits(doctor.getVisits())
+                    .rating(doctor.getAvgRating())
+                    .specialization(
+                            doctor.getSpecialties().stream()
+                                    .map(Specialty::getName)
+                                    .collect(Collectors.joining(", ")) // Gộp các chuyên khoa thành chuỗi
+                    )
+                    .name(doctor.getName())
+                    .build()
+            )
+            .collect(Collectors.toList());
+  }
+  public List<DoctorSearchResponseDTO> searchDoctorsByAccidents(String accident) {
+    // Tìm tất cả tai nạn khớp với danh sách nhập vào
+    List<Accident> accidents = accidentRepository.findAllByNameContainingIgnoreCase(accident);
+
+    if (accidents.isEmpty()) {
+      return Collections.emptyList(); // Không có tai nạn nào khớp
+    }
+
+    // Lấy danh sách tất cả chuyên khoa liên quan đến các tai nạn tìm được
+    Set<Specialty> specialties = accidents.stream()
+            .map(Accident::getSpecialty)
+            .collect(Collectors.toSet());
+
+    // Tìm tất cả bác sĩ thuộc các chuyên khoa đó
+    List<Doctor> doctors = doctorRepository.findBySpecialtiesIn(specialties);
+
+    return doctors.stream()
+            .map(doctor -> DoctorSearchResponseDTO.builder()
+                    .id(doctor.getId())
+                    .thumbnail(doctor.getThumbnail())
+                    .hospital(doctor.getHospital())
+                    .visits(doctor.getVisits())
+                    .price(doctor.getPrice())
+                    .rating(doctor.getAvgRating())
+                    .specialization(
+                            doctor.getSpecialties().stream()
+                                    .map(Specialty::getName)
+                                    .collect(Collectors.joining(", ")) // Gộp các chuyên khoa thành chuỗi
+                    )
+                    .name(doctor.getName())
+                    .build()
+            )
+            .collect(Collectors.toList());
+  }
+
+
+  public DoctorDetailsDTO getDoctorDetailsById(long id) {
+    var obj =  doctorRepository.findById(id).get();
+    var defaultTime = Arrays.asList(8,9,10,11,12,13,14,15,16,17,18,19,20,21);
+
+    return null;
+  }
 
   public List<DoctorCardDTO> listDoctors() {
-    return doctorRepository.findAll().stream()
-        .map(doctor -> DoctorCardDTO.builder()
-            .id(doctor.getId())
-            .name(doctor.getFirstName() + doctor.getLastName())
-            .thumbnail(
-                doctor.getImages().stream().findFirst().orElse(Image.builder().url("null").build())
-                    .getUrl())
-            .ratings(5.3f)
-            .visit(69)
-            .price(0)
-            .specialization(doctor.getSpecialization().getDescription())
-            .hospital(doctor.getAddress()).build())
-        .toList();
-  }
-
-  public List<DoctorSearchResponseDTO> searchDoctorByAccident(String keyword) {
-    var key = Accident.findSpecialtyEnumByAccident(keyword);
-    var doctor = doctorRepository.findAllByAccident(key);
-
-    if (doctor.size() < 1) {
       return null;
-    }
-
-    List<DoctorSearchResponseDTO> responseDTOS = new ArrayList<>();
-    doctor.forEach(data -> {
-      responseDTOS.add(DoctorSearchResponseDTO
-          .builder()
-          .id(data.getId())
-          .address(data.getAddress())
-          .name(data.getLastName() + " " + data.getFirstName())
-          .specialization(data.getSpecialization().getDescription())
-                      .avgRating(data.getAvgRating())
-          .img(String.valueOf(
-              data.getImages().stream()
-                  .findFirst().orElse(Image.builder().url(null).build()).getUrl()))
-          .build());
-    });
-
-    return responseDTOS;
   }
 
-    public List<DoctorSearchResponseDTO> searchDoctorBySymptom(String keyword) {
-        Specialty specialty = Arrays.stream(Specialty.values())
-                .filter(spec -> spec.getSymptoms().contains(keyword))
-                .findFirst().orElse(null);
-        var doctors = doctorRepository.findBySpecialization(specialty);
-        return doctors.stream().map(doctor ->
-                        DoctorSearchResponseDTO.builder()
-                                .id(doctor.getId())
-                                .price(doctor.getPrice())
-                                .name(doctor.getLastName() + " " + doctor.getFirstName())
-                                .address(doctor.getAddress())
-                                .specialization(doctor.getSpecialization().getDescription())
-                                .img(doctor.getImages().stream().map(Image::getUrl).findFirst().orElse(null))
-                                .avgRating(doctor.getAvgRating())
-                                .build())
-                .collect(Collectors.toList());
-    }
+
 }

@@ -3,7 +3,7 @@ package nlu.com.app.enums;
 import java.util.Arrays;
 import java.util.List;
 
-public enum Accident {
+public enum EAccident {
   FRACTURE("Gãy xương", Arrays.asList("Gãy tay", "Gãy chân", "Gãy xương đòn"), "Bác sĩ chỉnh hình"),
   DISLOCATION("Trật khớp", Arrays.asList("Trật khớp vai", "Trật đầu gối", "Trật cổ tay"),
       "Bác sĩ chỉnh hình"),
@@ -15,7 +15,7 @@ public enum Accident {
   private final List<String> keywords;
   private final String treatmentSpecialty;
 
-  Accident(String name, List<String> keywords, String treatmentSpecialty) {
+  EAccident(String name, List<String> keywords, String treatmentSpecialty) {
     this.name = name;
     this.keywords = keywords;
     this.treatmentSpecialty = treatmentSpecialty;
@@ -43,9 +43,9 @@ public enum Accident {
   }
 
   public static String findSpecialtyByAccident(String keyword) {
-    for (Accident accident : values()) {
-      if (accident.keywords.contains(keyword)) {
-        return accident.treatmentSpecialty;
+    for (EAccident EAccident : values()) {
+      if (EAccident.keywords.contains(keyword)) {
+        return EAccident.treatmentSpecialty;
       }
     }
     return "Không tìm thấy bác sĩ chuyên trị phù hợp.";
