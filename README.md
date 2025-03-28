@@ -1,2 +1,2 @@
-# doctor-appointment
-This repository archives project for subject on school.
+## feature/create-database
+Create starter database for project.
