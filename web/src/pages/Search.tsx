@@ -1,9 +1,16 @@
+
+import {useEffect, useMemo, useState} from "react";
+import DoctorItemCard, { DoctorCardProps } from "../components/DoctorItemCard.tsx";
+
 import {useMemo, useState} from "react";
 import DoctorItemCard, {DoctorCardProps} from "../components/DoctorItemCard.tsx";
+
 import {DoctorRepository} from "../repository/DocktorRepository.ts";
 import {DoctorSearchResponse} from "../types/DoctorSearchResponse.ts";
 import Header from "../components/Header.tsx";
 
+
+=======
 export const mockDoctors: DoctorCardProps[] = [
     {
         name: "Dr. Nguyễn Văn A",
@@ -102,7 +109,7 @@ const Search = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState("Triệu chứng");
     const [keyword, setKeyword] = useState("");
-    const [doctors, setDoctors] = useState<DoctorCardProps[]>(mockDoctors);
+    const [doctors, setDoctors] = useState<DoctorCardProps[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const doctorsPerPage = 6; // 2 hàng, 3 cột
 
@@ -112,25 +119,59 @@ const Search = () => {
         return new DoctorRepository();
     }, []);
 
-    // Xử lý tìm kiếm
+    // // Xử lý tìm kiếm
+    // const handleSearch = async (event: React.FormEvent<HTMLFormElement>) => {
+    //     event.preventDefault();
+    //     const response =
+    //         searchType === 'symptom' ?
+    //             await doctorRepository.searchDoctorBySymptom(keyword) :
+    //             await doctorRepository.searchDoctorByAccident(keyword);
+    //     console.log(`Kết quả search ${selectedCategory} theo từ khóa ${keyword}:`);
+    //     console.log(response.result)
+    //     setDoctors(response.result.map((doctor: DoctorSearchResponse) => ({
+    //         name: doctor.name,
+    //         hospital: doctor.hospital,
+    //         specialty: doctor.specialization,
+    //         price: doctor.price,
+    //         consultations: doctor.visits,
+    //         rating: doctor.rating,
+    //         imageUrl: doctor.thumbnail,
+    //     })));
+    // }
+
+    const fetchDoctors = async (searchKeyword: string) => {
+        try {
+            const response =
+                searchType === 'symptom'
+                    ? await doctorRepository.searchDoctorBySymptom(searchKeyword)
+                    : await doctorRepository.searchDoctorByAccident(searchKeyword);
+
+            setDoctors(response.result.map((doctor: DoctorSearchResponse) => ({
+                id: doctor.id,
+                name: doctor.name,
+                hospital: doctor.hospital,
+                specialty: doctor.specialization,
+                price: doctor.price,
+                consultations: doctor.visits,
+                rating: doctor.rating,
+                imageUrl: doctor.thumbnail,
+            })));
+        } catch (error) {
+            console.error("Lỗi khi tìm kiếm bác sĩ:", error);
+            setDoctors([]);
+        }
+    };
+
     const handleSearch = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const response =
-            searchType === 'symptom' ?
-                await doctorRepository.searchDoctorBySymptom(keyword) :
-                await doctorRepository.searchDoctorByAccident(keyword);
-        console.log(`Kết quả search ${selectedCategory} theo từ khóa ${keyword}:`);
-        console.log(response.result)
-        setDoctors(response.result.map((doctor: DoctorSearchResponse) => ({
-            name: doctor.name,
-            hospital: doctor.hospital,
-            specialty: doctor.specialization,
-            price: doctor.price,
-            consultations: doctor.visits,
-            rating: doctor.rating,
-            imageUrl: doctor.thumbnail,
-        })));
-    }
+        await fetchDoctors(keyword.trim() === "" ? " " : keyword);
+    };
+
+    // ✅ Fetch mặc định khi vừa vào trang
+    useEffect(() => {
+        fetchDoctors(" ");
+    }, [searchType]); // Khi đổi loại search cũng fetch lại luôn
+
 
     // Lấy danh sách bác sĩ theo trang
     const indexOfLastDoctor = currentPage * doctorsPerPage;

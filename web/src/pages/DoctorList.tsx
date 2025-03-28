@@ -1,7 +1,7 @@
-import DoctorItemCard from "../components/DoctorItemCard.tsx";
-// import { useEffect, useState } from "react";
-// import { getDoctors } from "../utils/doctorService.ts";
-import {doctorsData} from "../data/doctorsData.ts";
+// import DoctorItemCard from "../components/DoctorItemCard.tsx";
+// // import { useEffect, useState } from "react";
+// // import { getDoctors } from "../utils/doctorService.ts";
+// import {doctorsData} from "../data/doctorsData.ts";
 
 export interface DoctorCardProps {
     id: number;
@@ -35,9 +35,9 @@ function DoctorList() {
     return (
         <div className="p-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                {doctorsData.map((doctor) => (
-                    <DoctorItemCard key={doctor.id} {...doctor} />
-                ))}
+                {/*{doctorsData.map((doctor) => (*/}
+                {/*    // <DoctorItemCard key={doctor.id} {...doctor} />*/}
+                {/*))}*/}
             </div>
 
         </div>
