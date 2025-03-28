@@ -1,9 +1,5 @@
 package nlu.com.app.service;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -19,95 +15,115 @@ import nlu.com.app.repository.DoctorRepository;
 import nlu.com.app.repository.SymptonRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.*;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class DoctorService {
 
-  SymptonRepository symptonRepository;
-  DoctorRepository doctorRepository;
-  AccidentRepository accidentRepository;
-  DoctorMapper doctorMapper;
+    SymptonRepository symptonRepository;
+    DoctorRepository doctorRepository;
+    AccidentRepository accidentRepository;
+    DoctorMapper doctorMapper;
 
-  public List<DoctorSearchResponseDTO> searchDoctorsBySymptoms(String symptomNames) {
-    // Tìm tất cả triệu chứng khớp với danh sách nhập vào
-    List<Symptom> symptoms = symptonRepository.findAllByNameContainingIgnoreCase(symptomNames);
+    public List<DoctorSearchResponseDTO> searchDoctorsBySymptoms(String symptomNames) {
+        // Tìm tất cả triệu chứng khớp với danh sách nhập vào
+        List<Symptom> symptoms = symptonRepository.findAllByNameContainingIgnoreCase(symptomNames);
 
-    if (symptoms.isEmpty()) {
-      return Collections.emptyList(); // Không có triệu chứng nào khớp
+        if (symptoms.isEmpty()) {
+            return Collections.emptyList(); // Không có triệu chứng nào khớp
+        }
+
+        // Lấy danh sách tất cả chuyên khoa liên quan đến các triệu chứng tìm được
+        Set<Specialty> specialties = symptoms.stream()
+                .map(Symptom::getSpecialty)
+                .collect(Collectors.toSet()); // Dùng Set để loại bỏ trùng lặp
+
+        // Tìm tất cả bác sĩ thuộc các chuyên khoa đó
+        List<Doctor> doctors = doctorRepository.findBySpecialtiesIn(specialties);
+
+        return doctors.stream()
+                .map(doctor -> DoctorSearchResponseDTO.builder()
+                        .id(doctor.getId())
+                        .thumbnail(doctor.getThumbnail())
+                        .hospital(doctor.getHospital())
+                        .price(doctor.getPrice())
+                        .visits(doctor.getVisits())
+                        .rating(doctor.getAvgRating())
+                        .specialization(
+                                doctor.getSpecialties().stream()
+                                        .map(Specialty::getName)
+                                        .collect(Collectors.joining(", ")) // Gộp các chuyên khoa thành chuỗi
+                        )
+                        .name(doctor.getName())
+                        .build()
+                )
+                .collect(Collectors.toList());
     }
 
-    // Lấy danh sách tất cả chuyên khoa liên quan đến các triệu chứng tìm được
-    Set<Specialty> specialties = symptoms.stream()
-            .map(Symptom::getSpecialty)
-            .collect(Collectors.toSet()); // Dùng Set để loại bỏ trùng lặp
+    public List<DoctorSearchResponseDTO> searchDoctorsByAccidents(String accident) {
+        // Tìm tất cả tai nạn khớp với danh sách nhập vào
+        List<Accident> accidents = accidentRepository.findAllByNameContainingIgnoreCase(accident);
 
-    // Tìm tất cả bác sĩ thuộc các chuyên khoa đó
-    List<Doctor> doctors = doctorRepository.findBySpecialtiesIn(specialties);
+        if (accidents.isEmpty()) {
+            return Collections.emptyList(); // Không có tai nạn nào khớp
+        }
 
-    return doctors.stream()
-            .map(doctor -> DoctorSearchResponseDTO.builder()
-                    .id(doctor.getId())
-                    .thumbnail(doctor.getThumbnail())
-                    .hospital(doctor.getHospital())
-                    .price(doctor.getPrice())
-                    .visits(doctor.getVisits())
-                    .rating(doctor.getAvgRating())
-                    .specialization(
-                            doctor.getSpecialties().stream()
-                                    .map(Specialty::getName)
-                                    .collect(Collectors.joining(", ")) // Gộp các chuyên khoa thành chuỗi
-                    )
-                    .name(doctor.getName())
-                    .build()
-            )
-            .collect(Collectors.toList());
-  }
+        // Lấy danh sách tất cả chuyên khoa liên quan đến các tai nạn tìm được
+        Set<Specialty> specialties = accidents.stream()
+                .map(Accident::getSpecialty)
+                .collect(Collectors.toSet());
 
-  public List<DoctorSearchResponseDTO> searchDoctorsByAccidents(String accident) {
-    // Tìm tất cả tai nạn khớp với danh sách nhập vào
-    List<Accident> accidents = accidentRepository.findAllByNameContainingIgnoreCase(accident);
+        // Tìm tất cả bác sĩ thuộc các chuyên khoa đó
+        List<Doctor> doctors = doctorRepository.findBySpecialtiesIn(specialties);
 
-    if (accidents.isEmpty()) {
-      return Collections.emptyList(); // Không có tai nạn nào khớp
+        return doctors.stream()
+                .map(doctor -> DoctorSearchResponseDTO.builder()
+                        .id(doctor.getId())
+                        .thumbnail(doctor.getThumbnail())
+                        .hospital(doctor.getHospital())
+                        .visits(doctor.getVisits())
+                        .price(doctor.getPrice())
+                        .rating(doctor.getAvgRating())
+                        .specialization(
+                                doctor.getSpecialties().stream()
+                                        .map(Specialty::getName)
+                                        .collect(Collectors.joining(", ")) // Gộp các chuyên khoa thành chuỗi
+                        )
+                        .name(doctor.getName())
+                        .build()
+                )
+                .collect(Collectors.toList());
     }
 
-    // Lấy danh sách tất cả chuyên khoa liên quan đến các tai nạn tìm được
-    Set<Specialty> specialties = accidents.stream()
-            .map(Accident::getSpecialty)
-            .collect(Collectors.toSet());
+    public DoctorDetailsDTO getDoctorDetails(long id) {
+        var doctor = doctorRepository.findById(id)
+                .orElse(null);
+        var doctorDetails = doctorMapper.toDoctorDetailsDTO(doctor);
+        doctorDetails = sortSchedules(doctorDetails);
+        return doctorDetails;
+    }
 
-    // Tìm tất cả bác sĩ thuộc các chuyên khoa đó
-    List<Doctor> doctors = doctorRepository.findBySpecialtiesIn(specialties);
+    public static DoctorDetailsDTO sortSchedules(DoctorDetailsDTO dto) {
+        // Tạo một TreeMap từ schedules hiện tại để sắp xếp theo key
+        Map<String, List<DoctorDetailsDTO.Time>> sortedSchedules = new TreeMap<>(dto.getSchedules());
+        return DoctorDetailsDTO.builder()
+                .id(dto.getId())
+                .name(dto.getName())
+                .image(dto.getImage())
+                .specialties(dto.getSpecialties())
+                .avgRating(dto.getAvgRating())
+                .price(dto.getPrice())
+                .introduction(dto.getIntroduction())
+                .schedules(sortedSchedules) // Gán schedules đã được sắp xếp
+                .experience(dto.getExperience())
+                .build();
+    }
 
-    return doctors.stream()
-            .map(doctor -> DoctorSearchResponseDTO.builder()
-                    .id(doctor.getId())
-                    .thumbnail(doctor.getThumbnail())
-                    .hospital(doctor.getHospital())
-                    .visits(doctor.getVisits())
-                    .price(doctor.getPrice())
-                    .rating(doctor.getAvgRating())
-                    .specialization(
-                            doctor.getSpecialties().stream()
-                                    .map(Specialty::getName)
-                                    .collect(Collectors.joining(", ")) // Gộp các chuyên khoa thành chuỗi
-                    )
-                    .name(doctor.getName())
-                    .build()
-            )
-            .collect(Collectors.toList());
-  }
-
-  public DoctorDetailsDTO getDoctorDetails(long id) {
-    var doctor = doctorRepository.findById(id)
-            .orElse(null);
-    var doctorDetails = doctorMapper.toDoctorDetailsDTO(doctor);
-    return doctorDetails;
-  }
-
-  public List<DoctorSearchResponseDTO> getListDoctor() {
-    return this.searchDoctorsByAccidents("");
-  }
+    public List<DoctorSearchResponseDTO> getListDoctor() {
+        return this.searchDoctorsByAccidents("");
+    }
 
 }
